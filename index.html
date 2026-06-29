@@ -34,67 +34,328 @@ pannellum.viewer('panorama',{
 
     scenes:{
 
-        room1:{
+    room1:{
 
-            type:"equirectangular",
+        type:"equirectangular",
 
-            panorama:"room1.png",
+        panorama:"room1.png",
 
-            hotSpots:[
+   hotSpots:[
 
-                {
+    {
+        pitch:-5,
+        yaw:60,
+        type:"scene",
+        text:"برو اتاق چهارم",
+        sceneId:"room4",
+        targetYaw:180,
+        targetPitch:0
+    },
 
-                    pitch:-5,
-
-                    yaw:170,
-
-                    type:"scene",
-
-                    text:"برو اتاق بعدی",
-
-                    sceneId:"room2",
-
-                    targetYaw:150,
-
-                    targetPitch:0
-
-                }
-
-            ]
-
-        },
-
-        room2:{
-
-            type:"equirectangular",
-
-            panorama:"room2.png",
-
-            hotSpots:[
-
-                {
-
-                    pitch:0,
-
-                    yaw:0,
-
-                    type:"scene",
-
-                    text:"برگرد",
-
-                    sceneId:"room1",
-
-                    targetYaw:-60,
-
-                    targetPitch:0
-
-                }
-
-            ]
-
-        }
-
+    {
+        pitch:-5,
+        yaw:170,
+        type:"scene",
+        text:"برو اتاق دوم",
+        sceneId:"room2",
+        targetYaw:180,
+        targetPitch:0
     }
+
+]
+
+    },
+
+    room2:{
+
+        type:"equirectangular",
+
+        panorama:"room2.png",
+
+        hotSpots:[
+
+    {
+        pitch:0,
+        yaw:0,
+        type:"scene",
+        text:"برو اتاق اول",
+        sceneId:"room1",
+        targetYaw:180,
+        targetPitch:0
+    },
+
+    {
+        pitch:0,
+        yaw:170,
+        type:"scene",
+        text:"برو اتاق سوم",
+        sceneId:"room3",
+        targetYaw:180,
+        targetPitch:0
+    }
+
+]
+
+    },
+
+    room3:{
+
+        type:"equirectangular",
+
+        panorama:"room3.png",
+
+        hotSpots:[
+
+    {
+        pitch:0,
+        yaw:-170,
+        type:"scene",
+        text:"برو اتاق دوم",
+        sceneId:"room2",
+        targetYaw:180,
+        targetPitch:0
+    },
+
+    {
+        pitch:0,
+        yaw:20,
+        type:"scene",
+        text:"برو اتاق ششم",
+        sceneId:"room6",
+        targetYaw:180,
+        targetPitch:0
+    }
+
+]
+
+    },
+
+    room4:{
+
+        type:"equirectangular",
+
+        panorama:"room4.png",
+
+        hotSpots:[
+
+    {
+        pitch:0,
+        yaw:-170,
+        type:"scene",
+        text:"برو اتاق اول",
+        sceneId:"room1",
+        targetYaw:180,
+        targetPitch:0
+    },
+
+    {
+        pitch:0,
+        yaw:20,
+        type:"scene",
+        text:"برو اتاق پنجم",
+        sceneId:"room5",
+        targetYaw:180,
+        targetPitch:0
+    }
+
+]
+
+    },
+
+    room5:{
+
+        type:"equirectangular",
+
+        panorama:"room5.png",
+
+        hotSpots:[
+
+    {
+        pitch:0,
+        yaw:-170,
+        type:"scene",
+        text:"برو اتاق چهارم",
+        sceneId:"room4",
+        targetYaw:180,
+        targetPitch:0
+    },
+
+    {
+        pitch:0,
+        yaw:20,
+        type:"scene",
+        text:"برو اتاق هشتم",
+        sceneId:"room8",
+        targetYaw:180,
+        targetPitch:0
+    }
+
+]
+
+    },
+room6:{
+    type:"equirectangular",
+    panorama:"room6.png",
+hotSpots:[
+
+    {
+        pitch:0,
+        yaw:-170,
+        type:"scene",
+        text:"برو اتاق سوم",
+        sceneId:"room3",
+        targetYaw:180,
+        targetPitch:0
+    },
+
+    {
+        pitch:0,
+        yaw:20,
+        type:"scene",
+        text:"برو اتاق هفتم",
+        sceneId:"room7",
+        targetYaw:180,
+        targetPitch:0
+    }
+
+]
+},
+room7: {
+type:"equirectangular",
+panorama:"room7.png",
+hotSpots:[
+
+    {
+        pitch:0,
+        yaw:-170,
+        type:"scene",
+        text:"برو اتاق ششم",
+        sceneId:"room6",
+        targetYaw:180,
+        targetPitch:0
+    },
+
+    {
+        pitch:0,
+        yaw:20,
+        type:"scene",
+        text:"برو اتاق نهم",
+        sceneId:"room9",
+        targetYaw:180,
+        targetPitch:0
+    }
+]
+},
+room8:{
+type:"equirectangular",
+panorama:"room8.png",
+hotSpots:[
+
+    {
+        pitch:0,
+        yaw:-170,
+        type:"scene",
+        text:"برو اتاق پنجم",
+        sceneId:"room5",
+        targetYaw:180,
+        targetPitch:0
+    },
+
+    {
+        pitch:0,
+        yaw:20,
+        type:"scene",
+        text:"برو اتاق دهم",
+        sceneId:"room10",
+        targetYaw:180,
+        targetPitch:0
+    }
+
+]
+},
+room9:{
+type:"equirectangular",
+panorama:"room9.png",
+hotSpots:[
+
+    {
+        pitch:0,
+        yaw:-170,
+        type:"scene",
+        text:"برو اتاق هفتم",
+        sceneId:"room7",
+        targetYaw:180,
+        targetPitch:0
+    },
+
+    {
+        pitch:0,
+        yaw:20,
+        type:"scene",
+        text:"برو اتاق یازدهم",
+        sceneId:"room11",
+        targetYaw:180,
+        targetPitch:0
+    }
+
+]
+},
+room10:{
+type:"equirectangular",
+panorama:"room10.png",
+hotSpots:[
+
+    {
+        pitch:0,
+        yaw:-170,
+        type:"scene",
+        text:"برو اتاق هشتم",
+        sceneId:"room8",
+        targetYaw:180,
+        targetPitch:0
+    },
+
+    {
+        pitch:0,
+        yaw:20,
+        type:"scene",
+        text:"برو اتاق یازدهم",
+        sceneId:"room11",
+        targetYaw:180,
+        targetPitch:0
+    }
+
+]
+},
+room11:{
+type:"equirectangular",
+panorama:"room11.png",
+hotSpots:[
+
+    {
+        pitch:0,
+        yaw:-170,
+        type:"scene",
+        text:"برو اتاق دهم",
+        sceneId:"room10",
+        targetYaw:180,
+        targetPitch:0
+    },
+
+    {
+        pitch:0,
+        yaw:20,
+        type:"scene",
+        text:"برو اتاق نهم",
+        sceneId:"room9",
+        targetYaw:180,
+        targetPitch:0
+    }
+
+]
+}
+
+}             
 
 });
 
