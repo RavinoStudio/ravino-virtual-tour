@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="pannellum.css">
+    <link rel="icon" type="image/png" href="logo.png">
     <script src="pannellum.js"></script>
 
     <style>
@@ -15,32 +16,7 @@
 
         #panorama{
             width:100%;
-            height:100vh;
-}
-
-.pnlm-container{
-    background: url("loadingpages.png") no-repeat !important;
-    background-size: cover !important;
-}
-
-.pnlm-load-box{
-    background: rgba(0,0,0,.45) !important;
-    border: none !important;
-    border-radius: 12px !important;
-}
-
-.pnlm-load-box p{
-    color: white !important;
-}
-
-.pnlm-lbar{
-    background: rgba(255,255,255,.25) !important;
-}
-
-.pnlm-lbar-fill{
-    background: white !important;
-}
-
+            height:100vh
       #logo{
 
     position:fixed;
@@ -64,6 +40,15 @@
 </head>
 
 <body>
+<div id="loadingScreen">
+
+    <img src="loadingPage.png" id="loadingImage">
+
+    <div class="loadingText">
+        در حال بارگذاری...
+    </div>
+
+</div>
 <div id="panorama"></div>
 <img id="logo" src="logo.png" alt="Logo">
 <script>
@@ -400,6 +385,11 @@ hotSpots:[
 
 });
 
+setTimeout(function () {
+
+    document.getElementById("loadingScreen").style.display = "none";
+
+},3000);
 </script>
 
 </body>
