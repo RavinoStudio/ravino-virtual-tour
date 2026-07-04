@@ -23,14 +23,53 @@
     background-size: cover !important;
 }
 
-.pnlm-load-box{
+.pnlm-load-box.loading-text{
+
+    position: fixed !important;
+
+    top: 50% !important;
+    left: 50% !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    width: 650px !important;
+    min-height: 180px !important;
+
+    padding: 25px 30px !important;
+
+    box-sizing: border-box;
+
     background: rgba(0,0,0,.45) !important;
+
     border: none !important;
-    border-radius: 12px !important;
+
+    border-radius: 18px !important;
+
+    display: flex !important;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
 }
 
 .pnlm-load-box p{
-    color: white !important;
+
+    color:white !important;
+
+    font-size:22px !important;
+
+    line-height:2 !important;
+
+    text-align:center;
+
+    max-width:100%;
+
+    margin:auto;
+
+    font-family:tahoma;
+
 }
 
 .pnlm-lbar{
@@ -67,6 +106,32 @@
 <div id="panorama"></div>
 <img id="logo" src="logo.png" alt="Logo">
 <script>
+const sceneTexts = {
+
+    room1: "به لابی پروژه راوینو خوش آمدید. در این تور می‌توانید تمام فضاها را به صورت ۳۶۰ درجه مشاهده کنید.",
+
+    room2: "این قسمت مربوط به فضای پذیرش پروژه است. طراحی این بخش با هدف ایجاد اولین تجربه‌ی مطلوب برای مراجعه‌کنندگان انجام شده است.",
+
+    room3: "در این بخش می‌توانید جزئیات متریال و کیفیت اجرای پروژه را از نزدیک بررسی کنید.",
+
+    room4: "فضای چهارم یکی از مهم‌ترین قسمت‌های پروژه است که با نورپردازی و طراحی ویژه اجرا شده است.",
+
+    room5: "در این قسمت می‌توانید ارتباط بین فضاهای مختلف پروژه را بهتر مشاهده کنید.",
+
+    room6: "در حال ورود به یکی از بخش‌های اصلی پروژه هستید. لطفاً چند لحظه صبر کنید.",
+
+    room7: "این فضا با هدف افزایش کیفیت تجربه کاربران طراحی شده است.",
+
+    room8: "در این قسمت جزئیات بیشتری از طراحی داخلی پروژه قابل مشاهده است.",
+
+    room9: "این بخش نمای کاملی از یکی از فضاهای پروژه را نمایش می‌دهد.",
+
+    room10:"در حال بارگذاری فضای بعدی پروژه...",
+
+
+    room11:"شما به آخرین بخش تور مجازی رسیده‌اید. از همراهی شما سپاسگزاریم."
+
+};
 
 const viewer =  pannellum.viewer('panorama',{
     default:{
@@ -398,7 +463,71 @@ hotSpots:[
 
 }             
 
+})
+
+viewer.on("scenechange", function(sceneId){
+
+    setTimeout(function(){
+
+        const box = document.querySelector(".pnlm-load-box");
+        const p = document.querySelector(".pnlm-load-box p");
+
+        if(box){
+            box.classList.add("loading-text");
+        }
+
+        if(p && sceneTexts[sceneId]){
+            p.innerHTML = sceneTexts[sceneId];
+        }
+
+    },10);
+
 });
+
+const loadButtonWatcher = setInterval(function () {
+
+    const btn = document.querySelector(".pnlm-load-button");
+
+    if (btn) {
+
+        btn.addEventListener("click", function () {
+
+            const waitForBox = setInterval(function () {
+
+                const box = document.querySelector(".pnlm-load-box");
+                const p = document.querySelector(".pnlm-load-box p");
+
+                if (box && p) {
+
+                    box.classList.add("loading-text");
+                    p.innerHTML = sceneTexts["room1"];
+
+                    clearInterval(waitForBox);
+                }
+
+            }, 10);
+
+        }, { once: true });
+
+        clearInterval(loadButtonWatcher);
+    }
+
+}, 10);
+
+viewer.on("load", function(){
+
+    setTimeout(function(){
+
+        const box = document.querySelector(".pnlm-load-box");
+
+        if(box){
+            box.classList.remove("loading-text");
+        }
+
+    },100);
+
+});
+;
 
 </script>
 
