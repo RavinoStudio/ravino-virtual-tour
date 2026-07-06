@@ -25,21 +25,24 @@
 
 .pnlm-load-box.loading-text{
 
-    width:650px !important;
+    left:50% !important;
+    top:50% !important;
 
-    min-height:180px !important;
+    transform:translate(-50%,-50%) !important;
 
-    margin-left:-325px !important;
+    margin:0 !important;
 
-    margin-top:-90px !important;
+    width:750px;
+    max-width:90vw;
 
-    background:rgba(0,0,0,.45) !important;
+    min-height:260px;
+    height:auto;
 
-    border:none !important;
+    padding:30px 40px;
 
-    border-radius:18px !important;
+    background:rgba(0,0,0,.45);
 
-    padding:25px 30px !important;
+    border-radius:18px;
 
     box-sizing:border-box;
 }
@@ -50,20 +53,27 @@
 
     font-size:22px !important;
 
-    line-height:2 !important;
+    line-height:2.2 !important;
 
     text-align:center;
 
-    max-width:100%;
-
-    margin:auto;
+    margin:0 0 25px 0 !important;
 
     font-family:tahoma;
 
+    white-space:normal;
+
+    word-break:break-word;
+
+    overflow-wrap:anywhere;
 }
 
 .pnlm-lbar{
-    background: rgba(255,255,255,.25) !important;
+
+    width:180px;
+
+    margin:25px auto 0 auto !important;
+
 }
 
 .pnlm-lbar-fill{
