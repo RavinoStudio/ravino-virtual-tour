@@ -16,521 +16,633 @@
         #panorama{
             width:100%;
             height:100vh;
-}
+        }
 
-.pnlm-container{
-    background: url("loadingpages.png") no-repeat !important;
-    background-size: cover !important;
-}
+        .pnlm-container{
+            background: url("loadingpages.png") no-repeat !important;
+            background-size: cover !important;
+        }
 
-.pnlm-load-box.loading-text{
+        .pnlm-load-box.loading-text{
+            left:50% !important;
+            top:50% !important;
+            transform:translate(-50%,-50%) !important;
+            margin:0 !important;
+            width:750px;
+            max-width:90vw;
+            min-height:260px;
+            height:auto;
+            padding:30px 40px;
+            background:rgba(0,0,0,.45);
+            border-radius:18px;
+            box-sizing:border-box;
+        }
 
-    left:50% !important;
-    top:50% !important;
+        .pnlm-load-box p{
+            color:white !important;
+            font-size:22px !important;
+            line-height:2.2 !important;
+            text-align:center;
+            margin:0 0 25px 0 !important;
+            font-family:tahoma;
+            white-space:normal;
+            word-break:break-word;
+            overflow-wrap:anywhere;
+        }
 
-    transform:translate(-50%,-50%) !important;
+        .pnlm-lbar{
+            width:180px;
+            margin:25px auto 0 auto !important;
+        }
 
-    margin:0 !important;
+        .pnlm-lbar-fill{
+            background: white !important;
+        }
 
-    width:750px;
-    max-width:90vw;
+        #logo{
+            position:fixed;
+            top:20px;
+            right:20px;
+            width:90px;
+            height:auto;
+            z-index:9999;
+            pointer-events:none;
+            opacity:0.95;
+        }
 
-    min-height:260px;
-    height:auto;
+        /* -------------------------------------------------- */
+        /*  ۱. استایل آیکون علامت تعجب روی مانیتور             */
+        /* -------------------------------------------------- */
+        .info-hotspot {
+            height: 36px;
+            width: 36px;
+            border-radius: 50%;
+            background: rgba(0, 162, 232, 0.9);
+            border: 2px solid #ffffff;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 162, 232, 0.8);
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
 
-    padding:30px 40px;
+        .info-hotspot:hover {
+            transform: scale(1.15);
+            background: rgba(0, 162, 232, 1);
+        }
 
-    background:rgba(0,0,0,.45);
+        /* -------------------------------------------------- */
+        /*  ۲. استایل لایه تارکننده (Overlay) و مدال اول      */
+        /* -------------------------------------------------- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
 
-    border-radius:18px;
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-    box-sizing:border-box;
-}
+        .modal-card {
+            width: 400px;
+            max-width: 85vw;
+            max-height: 85vh;
+            background: #181818;
+            color: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: tahoma, sans-serif;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
 
-.pnlm-load-box p{
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 10;
+            transition: background 0.2s;
+        }
 
-    color:white !important;
+        .modal-close:hover {
+            background: rgba(255, 0, 0, 0.8);
+        }
 
-    font-size:22px !important;
+        .modal-image-container {
+            width: 100%;
+            height: 240px;
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+        }
 
-    line-height:2.2 !important;
+        .modal-image-container::after {
+            content: "🔍 جهت ورود به دسکتاپ کلیک کنید";
+            position: absolute;
+            bottom: 8px;
+            background: rgba(0, 162, 232, 0.85);
+            color: #fff;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
 
-    text-align:center;
+        .modal-image-container:hover::after {
+            background: rgba(0, 162, 232, 1);
+        }
 
-    margin:0 0 25px 0 !important;
+        .modal-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+            box-sizing: border-box;
+            transition: transform 0.2s ease;
+        }
 
-    font-family:tahoma;
+        .modal-image-container:hover img {
+            transform: scale(1.03);
+        }
 
-    white-space:normal;
+        .modal-content {
+            padding: 20px;
+            overflow-y: auto;
+            direction: rtl;
+            text-align: right;
+        }
 
-    word-break:break-word;
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4db8ff;
+        }
 
-    overflow-wrap:anywhere;
-}
+        .modal-description {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #dddddd;
+        }
 
-.pnlm-lbar{
+        /* -------------------------------------------------- */
+        /*  ۳. استایل نمایش دسکتاپ و دکمه کلیک روی اکسل        */
+        /* -------------------------------------------------- */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000000;
+            z-index: 20000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
 
-    width:180px;
+        .fullscreen-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
 
-    margin:25px auto 0 auto !important;
+        .desktop-wrapper {
+            position: relative;
+            display: inline-block;
+            max-width: 100vw;
+            max-height: 100vh;
+        }
 
-}
+        .desktop-wrapper img {
+            max-width: 100vw;
+            max-height: 100vh;
+            display: block;
+            object-fit: contain;
+        }
 
-.pnlm-lbar-fill{
-    background: white !important;
-}
+        /* ناحیه کلیک مخفی روی آیکون اکسل */
+        .excel-icon-hotspot {
+            position: absolute;
+            top: 10%;
+            left: 5%;
+            width: 3.5%;
+            height: 7.5%;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 20002;
+        }
 
-      #logo{
+        .fullscreen-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 0, 0, 0.75);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 22px;
+            font-weight: bold;
+            z-index: 30005;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: background 0.2s, transform 0.2s;
+        }
 
-    position:fixed;
+        .fullscreen-close:hover {
+            background: rgba(255, 0, 0, 1);
+            transform: scale(1.1);
+        }
 
-    top:20px;
+        /* -------------------------------------------------- */
+        /*  ۴. استایل پنجره اکسل و دکمه‌های ورق زدن (صفحه‌بندی) */
+        /* -------------------------------------------------- */
+        #excelView {
+            z-index: 30000;
+        }
 
-    right:20px;
+        .excel-wrapper {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    width:90px;
+        .excel-wrapper img {
+            width: 100vw;
+            height: 100vh;
+            object-fit: contain;
+        }
 
-    height:auto;
+        /* دکمه‌های تعویض صفحه اکسل در پایین */
+        .excel-nav-bar {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            background: rgba(20, 20, 20, 0.85);
+            padding: 8px 18px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+            z-index: 30002;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+        }
 
-    z-index:9999;
+        .excel-nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-family: tahoma, sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-    pointer-events:none;
+        .excel-nav-btn:hover {
+            background: #107c41; /* رنگ برند اکسل */
+            border-color: #107c41;
+            transform: translateY(-2px);
+        }
 
-    opacity:0.95;
-
-}
+        .excel-nav-btn.active-page {
+            background: #107c41;
+            border-color: #ffffff;
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
+
 <div id="panorama"></div>
 <img id="logo" src="logo.png" alt="Logo">
+
+<!-- پاپ‌آپ اول -->
+<div id="infoModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-close" id="closeModal">&times;</div>
+        <div class="modal-image-container" id="monitorImgBtn">
+            <img id="modalImg" src="monitor-details.png" alt="مانیتور Samsung">
+        </div>
+        <div class="modal-content">
+            <div id="modalTitle" class="modal-title">سیستم مانیتورینگ پیشخوان</div>
+            <div id="modalDesc" class="modal-description">
+                اطلاعات مربوط به نرم‌افزار فروش، ثبت سفارشات و مدیریت سفارشات دیجیتال کافه‌بیکری در این قسمت قرار دارد. (جهت ورود به دسکتاپ روی مانیتور کلیک کنید)
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- دسکتاپ -->
+<div id="fullscreenView" class="fullscreen-overlay">
+    <div class="fullscreen-close" id="closeFullscreen">&times;</div>
+    <div class="desktop-wrapper">
+        <img src="desktop-fullscreen.jpg" alt="دسکتاپ فول اسکرین">
+        <div class="excel-icon-hotspot" id="excelBtn" title="گزارشات فعالیت زمانی"></div>
+    </div>
+</div>
+
+<!-- پنجره اکسل با امکان تغییر بین صفحه ۱ و صفحه ۲ -->
+<div id="excelView" class="fullscreen-overlay">
+    <div class="fullscreen-close" id="closeExcel" title="بستن اکسل">&times;</div>
+    <div class="excel-wrapper">
+        <img id="excelImg" src="excel-view.jpg" alt="گزارشات اکسل">
+        
+        <!-- بار ناوبری صفحات اکسل -->
+        <div class="excel-nav-bar">
+            <button class="excel-nav-btn active-page" id="btnSheet1">📄 صفحه ۱ (Sheet1)</button>
+            <button class="excel-nav-btn" id="btnSheet2">📄 صفحه ۲ (Sheet2)</button>
+        </div>
+    </div>
+</div>
+
 <script>
 const sceneTexts = {
-
-    room1: "این پروژه یک کافه‌بیکری است؛ فضایی که تجربه نوشیدن قهوه و عطر نان تازه را در کنار هم قرار می‌دهد. از همان ورودی، ارتفاع بلند درگاه و جداره‌های شیشه‌ای، نگاه را تا انتهای کافه هدایت می‌کنند. قوس‌ها نیز از همین نقطه هویت پروژه را شکل می‌دهند و در تمام مسیر، به‌عنوان عنصر مشترک طراحی، تکرار می‌شوند.",
-
-    room2: "اینجا صندوق اصلی کافه‌بیکری قرار دارد؛ جایی که سفارش‌ها نهایی می‌شوند و مسیر خرید کامل می‌شود. در کنار آن، پلکان دسترسی به بخش اداری مجموعه قرار گرفته تا ارتباط میان فضای خدمات و بخش مدیریت، بدون تداخل با مسیر رفت‌وآمد مشتریان برقرار باشد. این جانمایی باعث شده فضای فروش، منظم و خوانا باقی بماند.",
-
-    room3: "در این بخش، ویترین‌ها فقط محل نمایش محصولات نیستند. قاب‌های مشکی، نورپردازی گرم و پس‌زمینه روشن، نگاه را به سمت بافت و رنگ نان‌ها و شیرینی‌ها هدایت می‌کنند. محدود بودن پالت متریال باعث شده محصولات، مهم‌ترین عنصر قابل توجه در این بخش از فضا باشند.",
-
-    room4: "پس از انتخاب محصول، سفارش‌ها در این بخش آماده می‌شوند. جانمایی این پیشخوان به گونه‌ای است که ارتباط آن با ویترین و صندوق، کوتاه و مستقیم باقی بماند. این نظم، علاوه بر افزایش سرعت خدمات، باعث شده فضای کاری نیز بخشی هماهنگ از معماری کافه باشد.",
-
-    room5: "در این قسمت، جزئیات کوچک به اندازه طراحی کلی اهمیت دارند. پیشخوان وزن‌گیری میان ویترین و صندوق قرار گرفته تا مسیر آماده‌سازی سفارش کوتاه و منظم باقی بماند. انتخاب این جانمایی باعث شده کارکنان بدون تداخل با مسیر حرکت مشتری، سفارش‌ها را آماده کنند و نظم فضا حتی در ساعات شلوغ نیز حفظ شود.",
-
-    room6: "این کافه‌بیکری برای لحظه‌های مختلف روز طراحی شده است. به همین دلیل، بخش محصولات آماده در امتداد مسیر اصلی قرار گرفته تا انتخاب یک نوشیدنی، ساندویچ یا میان‌وعده، به همان سادگی انتخاب شیرینی باشد. این جانمایی، مسیر حرکت را منظم و تجربه خرید را کامل‌تر می‌کند.",
-
+    room1: "این پروژه یک کافه‌بیکری است؛ فضایی که تجربه نوشیدن قهوه و عطر نان تازه را در کنار هم قرار می‌دهد...",
+    room2: "اینجا صندوق اصلی کافه‌بیکری قرار دارد؛ جایی که سفارش‌ها نهایی می‌شوند و مسیر خرید کامل می‌شود...",
+    room3: "در این بخش، ویترین‌ها فقط محل نمایش محصولات نیستند...",
+    room4: "پس از انتخاب محصول، سفارش‌ها در این بخش آماده می‌شوند...",
+    room5: "در این قسمت، جزئیات کوچک به اندازه طراحی کلی اهمیت دارند...",
+    room6: "این کافه‌بیکری برای لحظه‌های مختلف روز طراحی شده است...",
     room7: "در این بخش به پیشخوان کافه میرسید. ترکیب چوب و سنگ تیره کانتر را به یکی از شاخص‌ترین عناصر پروژه تبدیل کرده است. در اینجا فرآیند آماده‌سازی از دید مخاطب پنهان نیست؛ زیرا بخشی از تجربه حضور در کافه، تماشای همین لحظه‌هاست.",
-
-    room8: "در میانه پروژه، نظم طراحی بیشتر از هر جای دیگری دیده می‌شود. نورهای خطی سقف، مسیر حرکت را دنبال می‌کنند و ارتفاع فضا، حس وسعت را تقویت می‌کند. میز مرکزی نیز برای ایجاد فضایی مشترک طراحی شده؛ جایی که حضور افراد، چه به‌تنهایی و چه در کنار دیگران، بخشی از تجربه کافه می‌شود.",
-
-    room9: "در این بخش وارد فضای کافه میشوید، فضایی که در آن فروش جای خود را به مکث و گفتگو می‌دهد. سقف شیشه‌ای نور طبیعی را به عمق نشیمن می‌رساند و قوس‌های تکرارشونده، ارتباط این فضا را با سایر بخش‌های پروژه حفظ می‌کنند. حضور گیاهان در امتداد دیوارها نیز گرمای متریال‌ها را متعادل کرده و حس آرامش بیشتری ایجاد می‌کند.",
-
-    room10:"این قسمت برای کسانی طراحی شده که محیطی آرام‌تر را ترجیح می‌دهند. فاصله مناسب میزها، دید به فضای اصلی و نور ملایم، تعادلی میان خلوت شخصی و پویایی کافه ایجاد کرده است. در اینجا نیز همان زبان طراحی، بدون تغییر، در تمام جزئیات ادامه پیدا می‌کند.",
-
-    room11:"از ورودی تا فضای نشیمن، قوس‌ها، متریال‌ها و نورپردازی، بدون گسست در کنار هم ادامه یافته‌اند. هدف این طراحی، خلق فضایی بوده که حرکت در آن طبیعی باشد و هر بخش، ادامه‌ای از بخش قبل احساس شود؛ درست مانند تجربه‌ای که به‌آرامی کامل می‌شود."
-
+    room8: "در میانه پروژه، نظم طراحی بیشتر از هر جای دیگری دیده می‌شود...",
+    room9: "در این بخش وارد فضای کافه میشوید...",
+    room10:"این قسمت برای کسانی طراحی شده که محیطی آرام‌تر را ترجیح می‌دهند...",
+    room11:"از ورودی تا فضای نشیمن، قوس‌ها، متریال‌ها و نورپردازی، بدون گسست در کنار هم ادامه یافته‌اند..."
 };
 
-const viewer =  pannellum.viewer('panorama',{
+const viewer = pannellum.viewer('panorama',{
     default:{
         firstScene:"room1"
     },
 
     scenes:{
+        room1:{
+            type:"equirectangular",
+            panorama:"room1.png",
+            hotSpots:[
+                { pitch:-5, yaw:60, type:"scene", text:"برو اتاق چهارم", sceneId:"room4", targetYaw:75, targetPitch:0 },
+                { pitch:-5, yaw:170, type:"scene", text:"برو اتاق دوم", sceneId:"room2", targetYaw:165, targetPitch:0 }
+            ]
+        },
 
-    room1:{
+        room2:{
+            type:"equirectangular",
+            panorama:"room2.png",
+            hotSpots:[
+                { pitch:0, yaw:0, type:"scene", text:"برو اتاق اول", sceneId:"room1", targetYaw:360, targetPitch:0 },
+                { pitch:0, yaw:65, type:"scene", text:"برو اتاق سوم", sceneId:"room3", targetYaw:78, targetPitch:0 }
+            ]
+        },
 
-        type:"equirectangular",
+        room3:{
+            type:"equirectangular",
+            panorama:"room3.png",
+            hotSpots:[
+                { pitch:0, yaw:-120, type:"scene", text:"برو اتاق دوم", sceneId:"room2", targetYaw:210, targetPitch:0 },
+                { pitch:0, yaw:-180, type:"scene", text:"برو اتاق ششم", sceneId:"room6", targetYaw:180, targetPitch:0 }
+            ]
+        },
 
-        panorama:"room1.png",
+        room4:{
+            type:"equirectangular",
+            panorama:"room4.png",
+            hotSpots:[
+                { pitch:0, yaw:-110, type:"scene", text:"برو اتاق اول", sceneId:"room1", targetYaw:250, targetPitch:0 },
+                { pitch:0, yaw:86, type:"scene", text:"برو اتاق پنجم", sceneId:"room5", targetYaw:100, targetPitch:0 }
+            ]
+        },
 
-   hotSpots:[
+        room5:{
+            type:"equirectangular",
+            panorama:"room5.png",
+            hotSpots:[
+                { pitch:0, yaw:-93, type:"scene", text:"برو اتاق چهارم", sceneId:"room4", targetYaw:275, targetPitch:0 },
+                { pitch:0, yaw:115, type:"scene", text:"برو اتاق هشتم", sceneId:"room8", targetYaw:120, targetPitch:0 }
+            ]
+        },
 
-    {
-        pitch:-5,
-        yaw:60,
-        type:"scene",
-        text:"برو اتاق چهارم",
-        sceneId:"room4",
-        targetYaw:75,
-        targetPitch:0
-    },
+        room6:{
+            type:"equirectangular",
+            panorama:"room6.png",
+            hotSpots:[
+                { pitch:0, yaw:-7, type:"scene", text:"برو اتاق سوم", sceneId:"room3", targetYaw:360, targetPitch:0 },
+                { pitch:0, yaw:120, type:"scene", text:"برو اتاق هفتم", sceneId:"room7", targetYaw:145, targetPitch:0 }
+            ]
+        },
 
-    {
-        pitch:-5,
-        yaw:170,
-        type:"scene",
-        text:"برو اتاق دوم",
-        sceneId:"room2",
-        targetYaw:165,
-        targetPitch:0
-    }
+        /* اتاق هفتم (room7) - دکمه به سمت چپ‌تر منتقل شد (yaw: -25.0) */
+        room7: {
+            type:"equirectangular",
+            panorama:"room7.png",
+            hotSpots:[
+                { pitch:0, yaw:-80, type:"scene", text:"برو اتاق ششم", sceneId:"room6", targetYaw:300, targetPitch:0 },
+                { pitch:0, yaw:55, type:"scene", text:"برو اتاق نهم", sceneId:"room9", targetYaw:50, targetPitch:0 },
+                {
+                    pitch: -1.5,
+                    yaw: -50,  
+                    cssClass: "custom-hotspot",
+                    createTooltipFunc: createInfoHotspot,
+                    createTooltipArgs: {
+                        image: "monitor-details.png",
+                        title: "جزئیات مانیتور پیشخوان",
+                        desc: "در این مانیتور اطلاعات مربوط به سفارش مشتریان، وضعیت نان‌های آماده و منوی دیجیتال قابل مشاهده است."
+                    }
+                }
+            ]
+        },
 
-]
+        room8:{
+            type:"equirectangular",
+            panorama:"room8.png",
+            hotSpots:[
+                { pitch:0, yaw:-60, type:"scene", text:"برو اتاق پنجم", sceneId:"room5", targetYaw:290, targetPitch:0 },
+                { pitch:0, yaw:60, type:"scene", text:"برو اتاق دهم", sceneId:"room10", targetYaw:210, targetPitch:0 }
+            ]
+        },
 
-    },
+        room9:{
+            type:"equirectangular",
+            panorama:"room9.png",
+            hotSpots:[
+                { pitch:0, yaw:-120, type:"scene", text:"برو اتاق هفتم", sceneId:"room7", targetYaw:200, targetPitch:0 },
+                { pitch:0, yaw:122, type:"scene", text:"برو اتاق یازدهم", sceneId:"room11", targetYaw:-47, targetPitch:0 }
+            ]
+        },
 
-    room2:{
+        room10:{
+            type:"equirectangular",
+            panorama:"room10.png",
+            hotSpots:[
+                { pitch:0, yaw:-112, type:"scene", text:"برو اتاق هشتم", sceneId:"room8", targetYaw:-140, targetPitch:0 },
+                { pitch:0, yaw:-178, type:"scene", text:"برو اتاق یازدهم", sceneId:"room11", targetYaw:320, targetPitch:0 }
+            ]
+        },
 
-        type:"equirectangular",
+        room11:{
+            type:"equirectangular",
+            panorama:"room11.png",
+            hotSpots:[
+                { pitch:0, yaw:5, type:"scene", text:"برو اتاق دهم", sceneId:"room10", targetYaw:210, targetPitch:0 },
+                { pitch:0, yaw:-47, type:"scene", text:"برو اتاق نهم", sceneId:"room9", targetYaw:300, targetPitch:0 }
+            ]
+        }
+    }            
+});
 
-        panorama:"room2.png",
+function createInfoHotspot(hotSpotDiv, args) {
+    hotSpotDiv.classList.add('info-hotspot');
+    hotSpotDiv.innerHTML = '!';
 
-        hotSpots:[
-
-    {
-        pitch:0,
-        yaw:0,
-        type:"scene",
-        text:"برو اتاق اول",
-        sceneId:"room1",
-        targetYaw:360,
-        targetPitch:0
-    },
-
-    {
-        pitch:0,
-        yaw:65,
-        type:"scene",
-        text:"برو اتاق سوم",
-        sceneId:"room3",
-        targetYaw:78,
-        targetPitch:0
-    }
-
-]
-
-    },
-
-    room3:{
-
-        type:"equirectangular",
-
-        panorama:"room3.png",
-
-        hotSpots:[
-
-    {
-        pitch:0,
-        yaw:-120,
-        type:"scene",
-        text:"برو اتاق دوم",
-        sceneId:"room2",
-        targetYaw:210,
-        targetPitch:0
-    },
-
-    {
-        pitch:0,
-        yaw:-180,
-        type:"scene",
-        text:"برو اتاق ششم",
-        sceneId:"room6",
-        targetYaw:180,
-        targetPitch:0
-    }
-
-]
-
-    },
-
-    room4:{
-
-        type:"equirectangular",
-
-        panorama:"room4.png",
-
-        hotSpots:[
-
-    {
-        pitch:0,
-        yaw:-110,
-        type:"scene",
-        text:"برو اتاق اول",
-        sceneId:"room1",
-        targetYaw:250,
-        targetPitch:0
-    },
-
-    {
-        pitch:0,
-        yaw:86,
-        type:"scene",
-        text:"برو اتاق پنجم",
-        sceneId:"room5",
-        targetYaw:100,
-        targetPitch:0
-    }
-
-]
-
-    },
-
-    room5:{
-
-        type:"equirectangular",
-
-        panorama:"room5.png",
-
-        hotSpots:[
-
-    {
-        pitch:0,
-        yaw:-93,
-        type:"scene",
-        text:"برو اتاق چهارم",
-        sceneId:"room4",
-        targetYaw:275,
-        targetPitch:0
-    },
-
-    {
-        pitch:0,
-        yaw:115,
-        type:"scene",
-        text:"برو اتاق هشتم",
-        sceneId:"room8",
-        targetYaw:120,
-        targetPitch:0
-    }
-
-]
-
-    },
-room6:{
-    type:"equirectangular",
-    panorama:"room6.png",
-hotSpots:[
-
-    {
-        pitch:0,
-        yaw:-7,
-        type:"scene",
-        text:"برو اتاق سوم",
-        sceneId:"room3",
-        targetYaw:360,
-        targetPitch:0
-    },
-
-    {
-        pitch:0,
-        yaw:120,
-        type:"scene",
-        text:"برو اتاق هفتم",
-        sceneId:"room7",
-        targetYaw:145,
-        targetPitch:0
-    }
-
-]
-},
-room7: {
-type:"equirectangular",
-panorama:"room7.png",
-hotSpots:[
-
-    {
-        pitch:0,
-        yaw:-80,
-        type:"scene",
-        text:"برو اتاق ششم",
-        sceneId:"room6",
-        targetYaw:300,
-        targetPitch:0
-    },
-
-    {
-        pitch:0,
-        yaw:55,
-        type:"scene",
-        text:"برو اتاق نهم",
-        sceneId:"room9",
-        targetYaw:50,
-        targetPitch:0
-    }
-]
-},
-room8:{
-type:"equirectangular",
-panorama:"room8.png",
-hotSpots:[
-
-    {
-        pitch:0,
-        yaw:-60,
-        type:"scene",
-        text:"برو اتاق پنجم",
-        sceneId:"room5",
-        targetYaw:290,
-        targetPitch:0
-    },
-
-    {
-        pitch:0,
-        yaw:60,
-        type:"scene",
-        text:"برو اتاق دهم",
-        sceneId:"room10",
-        targetYaw:210,
-        targetPitch:0
-    }
-
-]
-},
-room9:{
-type:"equirectangular",
-panorama:"room9.png",
-hotSpots:[
-
-    {
-        pitch:0,
-        yaw:-120,
-        type:"scene",
-        text:"برو اتاق هفتم",
-        sceneId:"room7",
-        targetYaw:200,
-        targetPitch:0
-    },
-
-    {
-        pitch:0,
-        yaw:122,
-        type:"scene",
-        text:"برو اتاق یازدهم",
-        sceneId:"room11",
-        targetYaw:-47,
-        targetPitch:0
-    }
-
-]
-},
-room10:{
-type:"equirectangular",
-panorama:"room10.png",
-hotSpots:[
-
-    {
-        pitch:0,
-        yaw:-112,
-        type:"scene",
-        text:"برو اتاق هشتم",
-        sceneId:"room8",
-        targetYaw:-140,
-        targetPitch:0
-    },
-
-    {
-        pitch:0,
-        yaw:-178,
-        type:"scene",
-        text:"برو اتاق یازدهم",
-        sceneId:"room11",
-        targetYaw:320,
-        targetPitch:0
-    }
-
-]
-},
-room11:{
-type:"equirectangular",
-panorama:"room11.png",
-hotSpots:[
-
-    {
-        pitch:0,
-        yaw:5,
-        type:"scene",
-        text:"برو اتاق دهم",
-        sceneId:"room10",
-        targetYaw:210,
-        targetPitch:0
-    },
-
-    {
-        pitch:0,
-        yaw:-47,
-        type:"scene",
-        text:"برو اتاق نهم",
-        sceneId:"room9",
-        targetYaw:300,
-        targetPitch:0
-    }
-
-]
+    hotSpotDiv.addEventListener('click', function() {
+        openModal(args.image, args.title, args.desc);
+    });
 }
 
-}             
+function openModal(imageSrc, title, desc) {
+    document.getElementById('modalImg').src = imageSrc;
+    document.getElementById('modalTitle').innerText = title;
+    document.getElementById('modalDesc').innerText = desc;
+    document.getElementById('infoModal').classList.add('active');
+}
 
-})
+function closeModal() {
+    document.getElementById('infoModal').classList.remove('active');
+}
+
+document.getElementById('closeModal').addEventListener('click', closeModal);
+document.getElementById('infoModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+document.getElementById('monitorImgBtn').addEventListener('click', function() {
+    document.getElementById('fullscreenView').classList.add('active');
+});
+
+document.getElementById('closeFullscreen').addEventListener('click', function() {
+    document.getElementById('fullscreenView').classList.remove('active');
+});
+
+document.getElementById('excelBtn').addEventListener('click', function() {
+    document.getElementById('excelView').classList.add('active');
+});
+
+document.getElementById('closeExcel').addEventListener('click', function() {
+    document.getElementById('excelView').classList.remove('active');
+});
+
+/* مدیریت سوئیچ بین صفحات اکسل (Sheet1 و Sheet2) */
+const excelImg = document.getElementById('excelImg');
+const btnSheet1 = document.getElementById('btnSheet1');
+const btnSheet2 = document.getElementById('btnSheet2');
+
+btnSheet1.addEventListener('click', function() {
+    excelImg.src = 'excel-view.jpg';
+    btnSheet1.classList.add('active-page');
+    btnSheet2.classList.remove('active-page');
+});
+
+btnSheet2.addEventListener('click', function() {
+    excelImg.src = 'excel-view-page2.jpg';
+    btnSheet2.classList.add('active-page');
+    btnSheet1.classList.remove('active-page');
+});
+
+document.getElementById('panorama').addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    const coords = viewer.mouseEventToCoords(e);
+    console.log("Pitch: " + coords[0].toFixed(2) + " | Yaw: " + coords[1].toFixed(2));
+});
 
 viewer.on("scenechange", function (sceneId) {
-
     setTimeout(function () {
-
         const box = document.querySelector(".pnlm-load-box");
         const p = box ? box.querySelector("p:first-child") : null;
-
-        if (box) {
-            box.classList.add("loading-text");
-        }
-
-        if (p && sceneTexts[sceneId]) {
-            p.textContent = sceneTexts[sceneId];
-        }
-
+        if (box) box.classList.add("loading-text");
+        if (p && sceneTexts[sceneId]) p.textContent = sceneTexts[sceneId];
     }, 10);
-
 });
-
 
 const loadButtonWatcher = setInterval(function () {
-
     const btn = document.querySelector(".pnlm-load-button");
-
     if (btn) {
-
         btn.addEventListener("click", function () {
-
             const waitForBox = setInterval(function () {
-
                 const box = document.querySelector(".pnlm-load-box");
                 const p = box ? box.querySelector("p:first-child") : null;
-
                 if (box && p) {
-
                     box.classList.add("loading-text");
                     p.textContent = sceneTexts["room1"];
-
                     clearInterval(waitForBox);
                 }
-
             }, 10);
-
         }, { once: true });
-
         clearInterval(loadButtonWatcher);
     }
-
 }, 10);
 
-
 viewer.on("load", function () {
-
     setTimeout(function () {
-
         const box = document.querySelector(".pnlm-load-box");
-
-        if (box) {
-            box.classList.remove("loading-text");
-        }
-
+        if (box) box.classList.remove("loading-text");
     }, 100);
-
 });
-
-;
-
 </script>
 
 </body>
