@@ -2,6 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <link rel="stylesheet" href="pannellum.css">
     <script src="pannellum.js"></script>
 
@@ -56,7 +58,7 @@
         }
 
         .pnlm-lbar-fill{
-            background: white !important;
+            background:white !important;
         }
 
         #logo{
@@ -70,298 +72,541 @@
             opacity:0.95;
         }
 
-        /* -------------------------------------------------- */
-        /*  ۱. استایل آیکون علامت تعجب روی مانیتور             */
-        /* -------------------------------------------------- */
+
+        /* ================================================== */
+        /* 1. آیکون اطلاعات روی مانیتور                      */
+        /* ================================================== */
+
         .info-hotspot {
-            height: 36px;
-            width: 36px;
-            border-radius: 50%;
-            background: rgba(0, 162, 232, 0.9);
-            border: 2px solid #ffffff;
-            color: white;
-            font-weight: bold;
-            font-size: 20px;
-            font-family: Arial, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 162, 232, 0.8);
-            transition: transform 0.2s ease, background 0.2s ease;
+            height:36px;
+            width:36px;
+            border-radius:50%;
+            background:rgba(0,162,232,0.9);
+            border:2px solid #ffffff;
+            color:white;
+            font-weight:bold;
+            font-size:20px;
+            font-family:Arial,sans-serif;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            box-shadow:0 0 15px rgba(0,162,232,0.8);
+            transition:transform 0.2s ease, background 0.2s ease;
         }
 
         .info-hotspot:hover {
-            transform: scale(1.15);
-            background: rgba(0, 162, 232, 1);
+            transform:scale(1.15);
+            background:rgba(0,162,232,1);
         }
 
-        /* -------------------------------------------------- */
-        /*  ۲. استایل لایه تارکننده (Overlay) و مدال اول      */
-        /* -------------------------------------------------- */
+
+        /* ================================================== */
+        /* 2. Modal اطلاعات مانیتور                          */
+        /* ================================================== */
+
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            position:fixed;
+            top:0;
+            left:0;
+            width:100vw;
+            height:100vh;
+            background:rgba(0,0,0,0.5);
+            backdrop-filter:blur(8px);
+            -webkit-backdrop-filter:blur(8px);
+            z-index:10000;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            opacity:0;
+            pointer-events:none;
+
+            transition:opacity 0.3s ease;
         }
 
         .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
+            opacity:1;
+            pointer-events:auto;
         }
 
         .modal-card {
-            width: 400px;
-            max-width: 85vw;
-            max-height: 85vh;
-            background: #181818;
-            color: #ffffff;
-            border-radius: 14px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            font-family: tahoma, sans-serif;
-            border: 1px solid rgba(255,255,255,0.12);
+            width:400px;
+            max-width:85vw;
+            max-height:85vh;
+
+            background:#181818;
+            color:#ffffff;
+
+            border-radius:14px;
+
+            box-shadow:0 20px 40px rgba(0,0,0,0.6);
+
+            position:relative;
+
+            display:flex;
+            flex-direction:column;
+
+            overflow:hidden;
+
+            font-family:tahoma,sans-serif;
+
+            border:1px solid rgba(255,255,255,0.12);
         }
 
         .modal-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 32px;
-            height: 32px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-            z-index: 10;
-            transition: background 0.2s;
+            position:absolute;
+            top:10px;
+            right:10px;
+
+            width:32px;
+            height:32px;
+
+            background:rgba(0,0,0,0.7);
+            color:white;
+
+            border-radius:50%;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            cursor:pointer;
+
+            font-size:18px;
+
+            z-index:10;
+
+            transition:background 0.2s;
         }
 
         .modal-close:hover {
-            background: rgba(255, 0, 0, 0.8);
+            background:rgba(255,0,0,0.8);
         }
 
         .modal-image-container {
-            width: 100%;
-            height: 240px;
-            background: #000000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            cursor: pointer;
-            position: relative;
+            width:100%;
+            height:240px;
+
+            background:#000000;
+
+            display:flex;
+            align-items:center;
+            justify-content:center;
+
+            overflow:hidden;
+
+            cursor:pointer;
+
+            position:relative;
         }
 
         .modal-image-container::after {
-            content: "🔍 جهت ورود به دسکتاپ کلیک کنید";
-            position: absolute;
-            bottom: 8px;
-            background: rgba(0, 162, 232, 0.85);
-            color: #fff;
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 12px;
-            pointer-events: none;
-            transition: opacity 0.2s;
+            content:"🔍 مشاهده مانیتورها";
+
+            position:absolute;
+
+            bottom:8px;
+
+            background:rgba(0,162,232,0.85);
+            color:#fff;
+
+            font-size:11px;
+
+            padding:3px 8px;
+
+            border-radius:12px;
+
+            pointer-events:none;
+
+            transition:opacity 0.2s;
         }
 
         .modal-image-container:hover::after {
-            background: rgba(0, 162, 232, 1);
+            background:rgba(0,162,232,1);
         }
 
         .modal-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 10px;
-            box-sizing: border-box;
-            transition: transform 0.2s ease;
+            width:100%;
+            height:100%;
+
+            object-fit:contain;
+
+            padding:10px;
+
+            box-sizing:border-box;
+
+            transition:transform 0.2s ease;
         }
 
         .modal-image-container:hover img {
-            transform: scale(1.03);
+            transform:scale(1.03);
         }
 
         .modal-content {
-            padding: 20px;
-            overflow-y: auto;
-            direction: rtl;
-            text-align: right;
+            padding:20px;
+
+            overflow-y:auto;
+
+            direction:rtl;
+
+            text-align:right;
         }
 
         .modal-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #4db8ff;
+            font-size:18px;
+            font-weight:bold;
+
+            margin-bottom:10px;
+
+            color:#4db8ff;
         }
 
         .modal-description {
-            font-size: 14px;
-            line-height: 1.8;
-            color: #dddddd;
+            font-size:14px;
+
+            line-height:1.8;
+
+            color:#dddddd;
         }
 
-        /* -------------------------------------------------- */
-        /*  ۳. استایل نمایش دسکتاپ و دکمه کلیک روی اکسل        */
-        /* -------------------------------------------------- */
+
+        /* ================================================== */
+        /* 3. نمایش مانیتورها                                */
+        /* ================================================== */
+
+        .monitor-viewer {
+            position:fixed;
+
+            top:0;
+            left:0;
+
+            width:100vw;
+            height:100vh;
+
+            background:#000000;
+
+            z-index:20000;
+
+            display:flex;
+
+            justify-content:center;
+            align-items:center;
+
+            opacity:0;
+
+            pointer-events:none;
+
+            transition:opacity 0.3s ease;
+
+            overflow:hidden;
+
+            touch-action:pan-y;
+
+            user-select:none;
+
+            -webkit-user-select:none;
+        }
+
+        .monitor-viewer.active {
+            opacity:1;
+
+            pointer-events:auto;
+        }
+
+        .monitor-wrapper {
+            position:relative;
+
+            width:100%;
+            height:100%;
+
+            display:flex;
+
+            justify-content:center;
+            align-items:center;
+
+            overflow:hidden;
+        }
+
+        #monitorImage {
+            width:100%;
+            height:100%;
+
+            object-fit:contain;
+
+            display:block;
+
+            user-select:none;
+            -webkit-user-drag:none;
+            -webkit-user-select:none;
+
+            cursor:grab;
+
+            transition:transform 0.25s ease, opacity 0.2s ease;
+        }
+
+        #monitorImage.dragging {
+            cursor:grabbing;
+
+            transition:none;
+        }
+
+
+        /* ================================================== */
+        /* 4. دکمه بستن مانیتورها                            */
+        /* ================================================== */
+
+        .monitor-close {
+            position:absolute;
+
+            top:20px;
+            right:25px;
+
+            width:42px;
+            height:42px;
+
+            background:rgba(255,0,0,0.75);
+
+            color:white;
+
+            border-radius:50%;
+
+            display:flex;
+
+            align-items:center;
+            justify-content:center;
+
+            cursor:pointer;
+
+            font-size:24px;
+
+            font-weight:bold;
+
+            z-index:30005;
+
+            box-shadow:0 0 10px rgba(0,0,0,0.5);
+
+            transition:
+                background 0.2s,
+                transform 0.2s;
+        }
+
+        .monitor-close:hover {
+            background:rgba(255,0,0,1);
+
+            transform:scale(1.1);
+        }
+
+
+        /* ================================================== */
+        /* 5. شماره مانیتور                                  */
+        /* ================================================== */
+
+        .monitor-counter {
+            position:absolute;
+
+            bottom:25px;
+            left:50%;
+
+            transform:translateX(-50%);
+
+            background:rgba(20,20,20,0.8);
+
+            color:white;
+
+            padding:8px 18px;
+
+            border-radius:20px;
+
+            font-family:tahoma,sans-serif;
+
+            font-size:14px;
+
+            z-index:30005;
+
+            border:1px solid rgba(255,255,255,0.2);
+
+            backdrop-filter:blur(6px);
+
+            pointer-events:none;
+        }
+
+
+
+        /* ================================================== */
+        /* 7. دسکتاپ قدیمی - دیگر استفاده نمی‌شود             */
+        /* ================================================== */
+
         .fullscreen-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #000000;
-            z-index: 20000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            position:fixed;
+
+            top:0;
+            left:0;
+
+            width:100vw;
+            height:100vh;
+
+            background:#000000;
+
+            z-index:20000;
+
+            display:flex;
+
+            justify-content:center;
+            align-items:center;
+
+            opacity:0;
+
+            pointer-events:none;
+
+            transition:opacity 0.3s ease;
         }
 
         .fullscreen-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
+            opacity:1;
+
+            pointer-events:auto;
         }
 
-        .desktop-wrapper {
-            position: relative;
-            display: inline-block;
-            max-width: 100vw;
-            max-height: 100vh;
-        }
 
-        .desktop-wrapper img {
-            max-width: 100vw;
-            max-height: 100vh;
-            display: block;
-            object-fit: contain;
-        }
+        /* ================================================== */
+        /* 8. اکسل قدیمی - نگه داشته شده                      */
+        /* ================================================== */
 
-        /* ناحیه کلیک مخفی روی آیکون اکسل */
-        .excel-icon-hotspot {
-            position: absolute;
-            top: 10%;
-            left: 5%;
-            width: 3.5%;
-            height: 7.5%;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            z-index: 20002;
-        }
-
-        .fullscreen-close {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 0, 0, 0.75);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 22px;
-            font-weight: bold;
-            z-index: 30005;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            transition: background 0.2s, transform 0.2s;
-        }
-
-        .fullscreen-close:hover {
-            background: rgba(255, 0, 0, 1);
-            transform: scale(1.1);
-        }
-
-        /* -------------------------------------------------- */
-        /*  ۴. استایل پنجره اکسل و دکمه‌های ورق زدن (صفحه‌بندی) */
-        /* -------------------------------------------------- */
         #excelView {
-            z-index: 30000;
+            z-index:30000;
         }
 
         .excel-wrapper {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            position:relative;
+
+            width:100vw;
+            height:100vh;
+
+            display:flex;
+
+            justify-content:center;
+            align-items:center;
         }
 
         .excel-wrapper img {
-            width: 100vw;
-            height: 100vh;
-            object-fit: contain;
+            width:100vw;
+            height:100vh;
+
+            object-fit:contain;
         }
 
-        /* دکمه‌های تعویض صفحه اکسل در پایین */
         .excel-nav-bar {
-            position: absolute;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 12px;
-            background: rgba(20, 20, 20, 0.85);
-            padding: 8px 18px;
-            border-radius: 25px;
-            border: 1px solid rgba(255,255,255,0.2);
-            z-index: 30002;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-            backdrop-filter: blur(6px);
+            position:absolute;
+
+            bottom:25px;
+            left:50%;
+
+            transform:translateX(-50%);
+
+            display:flex;
+
+            gap:12px;
+
+            background:rgba(20,20,20,0.85);
+
+            padding:8px 18px;
+
+            border-radius:25px;
+
+            border:1px solid rgba(255,255,255,0.2);
+
+            z-index:30002;
+
+            box-shadow:0 8px 20px rgba(0,0,0,0.6);
+
+            backdrop-filter:blur(6px);
         }
 
         .excel-nav-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            padding: 6px 14px;
-            border-radius: 16px;
-            font-family: tahoma, sans-serif;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            background:rgba(255,255,255,0.1);
+
+            color:#ffffff;
+
+            border:1px solid rgba(255,255,255,0.25);
+
+            padding:6px 14px;
+
+            border-radius:16px;
+
+            font-family:tahoma,sans-serif;
+
+            font-size:13px;
+
+            cursor:pointer;
+
+            transition:all 0.2s ease;
+
+            display:flex;
+
+            align-items:center;
+
+            gap:6px;
         }
 
         .excel-nav-btn:hover {
-            background: #107c41; /* رنگ برند اکسل */
-            border-color: #107c41;
-            transform: translateY(-2px);
+            background:#107c41;
+
+            border-color:#107c41;
+
+            transform:translateY(-2px);
         }
 
         .excel-nav-btn.active-page {
-            background: #107c41;
-            border-color: #ffffff;
-            font-weight: bold;
+            background:#107c41;
+
+            border-color:#ffffff;
+
+            font-weight:bold;
+        }
+
+
+        /* ================================================== */
+        /* 9. موبایل                                          */
+        /* ================================================== */
+
+        @media (max-width:600px) {
+
+            .monitor-close {
+                top:15px;
+                right:15px;
+
+                width:38px;
+                height:38px;
+
+                font-size:21px;
+            }
+
+            .monitor-counter {
+                bottom:15px;
+
+                font-size:13px;
+
+                padding:7px 15px;
+            }
+
+            .monitor-arrow {
+                width:40px;
+                height:40px;
+
+                font-size:22px;
+
+                opacity:0.4;
+            }
+
+            .monitor-arrow-left {
+                left:10px;
+            }
+
+            .monitor-arrow-right {
+                right:10px;
+            }
         }
     </style>
 </head>
@@ -369,280 +614,1486 @@
 <body>
 
 <div id="panorama"></div>
+
 <img id="logo" src="logo.png" alt="Logo">
 
-<!-- پاپ‌آپ اول -->
+
+<!-- ====================================================== -->
+<!-- پاپ‌آپ اطلاعات مانیتور                                 -->
+<!-- ====================================================== -->
+
 <div id="infoModal" class="modal-overlay">
+
     <div class="modal-card">
-        <div class="modal-close" id="closeModal">&times;</div>
+
+        <div class="modal-close" id="closeModal">
+            &times;
+        </div>
+
         <div class="modal-image-container" id="monitorImgBtn">
-            <img id="modalImg" src="monitor-details.png" alt="مانیتور Samsung">
+
+            <img
+                id="modalImg"
+                src="monitor-details.png"
+                alt="مانیتور Samsung"
+            >
+
         </div>
+
         <div class="modal-content">
-            <div id="modalTitle" class="modal-title">سیستم مانیتورینگ پیشخوان</div>
-            <div id="modalDesc" class="modal-description">
-                اطلاعات مربوط به نرم‌افزار فروش، ثبت سفارشات و مدیریت سفارشات دیجیتال کافه‌بیکری در این قسمت قرار دارد. (جهت ورود به دسکتاپ روی مانیتور کلیک کنید)
+
+            <div id="modalTitle" class="modal-title">
+                سیستم مانیتورینگ پیشخوان
             </div>
+
+            <div id="modalDesc" class="modal-description">
+                اطلاعات مربوط به نرم‌افزار فروش، ثبت سفارشات و مدیریت سفارشات دیجیتال کافه‌بیکری در این قسمت قرار دارد.
+                (جهت مشاهده مانیتورها روی تصویر کلیک کنید)
+            </div>
+
         </div>
+
     </div>
+
 </div>
 
-<!-- دسکتاپ -->
-<div id="fullscreenView" class="fullscreen-overlay">
-    <div class="fullscreen-close" id="closeFullscreen">&times;</div>
-    <div class="desktop-wrapper">
-        <img src="desktop-fullscreen.jpg" alt="دسکتاپ فول اسکرین">
-        <div class="excel-icon-hotspot" id="excelBtn" title="گزارشات فعالیت زمانی"></div>
+
+<!-- ====================================================== -->
+<!-- نمایش مانیتورها                                        -->
+<!-- ====================================================== -->
+
+<div id="monitorViewer" class="monitor-viewer">
+
+    <div class="monitor-wrapper">
+
+        <img
+            id="monitorImage"
+            src="monitor1.png"
+            alt="Monitor"
+            draggable="false"
+        >
+
     </div>
+
+
+    <!-- دکمه بستن -->
+
+    <div
+        class="monitor-close"
+        id="closeMonitorViewer"
+        title="بستن"
+    >
+        &times;
+    </div>
+
+    <!-- شماره مانیتور -->
+
+    <div class="monitor-counter" id="monitorCounter">
+        مانیتور ۱ از ۶
+    </div>
+
 </div>
 
-<!-- پنجره اکسل با امکان تغییر بین صفحه ۱ و صفحه ۲ -->
+
+<!-- ====================================================== -->
+<!-- پنجره اکسل                                             -->
+<!-- ====================================================== -->
+
 <div id="excelView" class="fullscreen-overlay">
-    <div class="fullscreen-close" id="closeExcel" title="بستن اکسل">&times;</div>
-    <div class="excel-wrapper">
-        <img id="excelImg" src="excel-view.jpg" alt="گزارشات اکسل">
-        
-        <!-- بار ناوبری صفحات اکسل -->
-        <div class="excel-nav-bar">
-            <button class="excel-nav-btn active-page" id="btnSheet1">📄 صفحه ۱ (Sheet1)</button>
-            <button class="excel-nav-btn" id="btnSheet2">📄 صفحه ۲ (Sheet2)</button>
-        </div>
+
+    <div
+        class="fullscreen-close"
+        id="closeExcel"
+        title="بستن اکسل"
+    >
+        &times;
     </div>
+
+    <div class="excel-wrapper">
+
+        <img
+            id="excelImg"
+            src="excel-view.jpg"
+            alt="گزارشات اکسل"
+        >
+
+        <div class="excel-nav-bar">
+
+            <button
+                class="excel-nav-btn active-page"
+                id="btnSheet1"
+            >
+                📄 صفحه ۱ (Sheet1)
+            </button>
+
+            <button
+                class="excel-nav-btn"
+                id="btnSheet2"
+            >
+                📄 صفحه ۲ (Sheet2)
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
+
 
 <script>
+
+/* ========================================================= */
+/* متن اتاق‌ها                                               */
+/* ========================================================= */
+
 const sceneTexts = {
-    room1: "این پروژه یک کافه‌بیکری است؛ فضایی که تجربه نوشیدن قهوه و عطر نان تازه را در کنار هم قرار می‌دهد...",
-    room2: "اینجا صندوق اصلی کافه‌بیکری قرار دارد؛ جایی که سفارش‌ها نهایی می‌شوند و مسیر خرید کامل می‌شود...",
-    room3: "در این بخش، ویترین‌ها فقط محل نمایش محصولات نیستند...",
-    room4: "پس از انتخاب محصول، سفارش‌ها در این بخش آماده می‌شوند...",
-    room5: "در این قسمت، جزئیات کوچک به اندازه طراحی کلی اهمیت دارند...",
-    room6: "این کافه‌بیکری برای لحظه‌های مختلف روز طراحی شده است...",
-    room7: "در این بخش به پیشخوان کافه میرسید. ترکیب چوب و سنگ تیره کانتر را به یکی از شاخص‌ترین عناصر پروژه تبدیل کرده است. در اینجا فرآیند آماده‌سازی از دید مخاطب پنهان نیست؛ زیرا بخشی از تجربه حضور در کافه، تماشای همین لحظه‌هاست.",
-    room8: "در میانه پروژه، نظم طراحی بیشتر از هر جای دیگری دیده می‌شود...",
-    room9: "در این بخش وارد فضای کافه میشوید...",
-    room10:"این قسمت برای کسانی طراحی شده که محیطی آرام‌تر را ترجیح می‌دهند...",
-    room11:"از ورودی تا فضای نشیمن، قوس‌ها، متریال‌ها و نورپردازی، بدون گسست در کنار هم ادامه یافته‌اند..."
+
+    room1:
+        "این پروژه یک کافه‌بیکری است؛ فضایی که تجربه نوشیدن قهوه و عطر نان تازه را در کنار هم قرار می‌دهد...",
+
+    room2:
+        "اینجا صندوق اصلی کافه‌بیکری قرار دارد؛ جایی که سفارش‌ها نهایی می‌شوند و مسیر خرید کامل می‌شود...",
+
+    room3:
+        "در این بخش، ویترین‌ها فقط محل نمایش محصولات نیستند...",
+
+    room4:
+        "پس از انتخاب محصول، سفارش‌ها در این بخش آماده می‌شوند...",
+
+    room5:
+        "در این قسمت، جزئیات کوچک به اندازه طراحی کلی اهمیت دارند...",
+
+    room6:
+        "این کافه‌بیکری برای لحظه‌های مختلف روز طراحی شده است...",
+
+    room7:
+        "در این بخش به پیشخوان کافه میرسید. ترکیب چوب و سنگ تیره کانتر را به یکی از شاخص‌ترین عناصر پروژه تبدیل کرده است. در اینجا فرآیند آماده‌سازی از دید مخاطب پنهان نیست؛ زیرا بخشی از تجربه حضور در کافه، تماشای همین لحظه‌هاست.",
+
+    room8:
+        "در میانه پروژه، نظم طراحی بیشتر از هر جای دیگری دیده می‌شود...",
+
+    room9:
+        "در این بخش وارد فضای کافه میشوید...",
+
+    room10:
+        "این قسمت برای کسانی طراحی شده که محیطی آرام‌تر را ترجیح می‌دهند...",
+
+    room11:
+        "از ورودی تا فضای نشیمن، قوس‌ها، متریال‌ها و نورپردازی، بدون گسست در کنار هم ادامه یافته‌اند..."
 };
 
-const viewer = pannellum.viewer('panorama',{
-    default:{
-        firstScene:"room1"
+
+/* ========================================================= */
+/* Pannellum Viewer                                           */
+/* ========================================================= */
+
+const viewer = pannellum.viewer('panorama', {
+
+    default: {
+        firstScene: "room1"
     },
 
-    scenes:{
-        room1:{
+    scenes: {
+
+        room1: {
             type:"equirectangular",
             panorama:"room1.png",
-            hotSpots:[
-                { pitch:-5, yaw:60, type:"scene", text:"برو اتاق چهارم", sceneId:"room4", targetYaw:75, targetPitch:0 },
-                { pitch:-5, yaw:170, type:"scene", text:"برو اتاق دوم", sceneId:"room2", targetYaw:165, targetPitch:0 }
-            ]
-        },
 
-        room2:{
-            type:"equirectangular",
-            panorama:"room2.png",
             hotSpots:[
-                { pitch:0, yaw:0, type:"scene", text:"برو اتاق اول", sceneId:"room1", targetYaw:360, targetPitch:0 },
-                { pitch:0, yaw:65, type:"scene", text:"برو اتاق سوم", sceneId:"room3", targetYaw:78, targetPitch:0 }
-            ]
-        },
-
-        room3:{
-            type:"equirectangular",
-            panorama:"room3.png",
-            hotSpots:[
-                { pitch:0, yaw:-120, type:"scene", text:"برو اتاق دوم", sceneId:"room2", targetYaw:210, targetPitch:0 },
-                { pitch:0, yaw:-180, type:"scene", text:"برو اتاق ششم", sceneId:"room6", targetYaw:180, targetPitch:0 }
-            ]
-        },
-
-        room4:{
-            type:"equirectangular",
-            panorama:"room4.png",
-            hotSpots:[
-                { pitch:0, yaw:-110, type:"scene", text:"برو اتاق اول", sceneId:"room1", targetYaw:250, targetPitch:0 },
-                { pitch:0, yaw:86, type:"scene", text:"برو اتاق پنجم", sceneId:"room5", targetYaw:100, targetPitch:0 }
-            ]
-        },
-
-        room5:{
-            type:"equirectangular",
-            panorama:"room5.png",
-            hotSpots:[
-                { pitch:0, yaw:-93, type:"scene", text:"برو اتاق چهارم", sceneId:"room4", targetYaw:275, targetPitch:0 },
-                { pitch:0, yaw:115, type:"scene", text:"برو اتاق هشتم", sceneId:"room8", targetYaw:120, targetPitch:0 }
-            ]
-        },
-
-        room6:{
-            type:"equirectangular",
-            panorama:"room6.png",
-            hotSpots:[
-                { pitch:0, yaw:-7, type:"scene", text:"برو اتاق سوم", sceneId:"room3", targetYaw:360, targetPitch:0 },
-                { pitch:0, yaw:120, type:"scene", text:"برو اتاق هفتم", sceneId:"room7", targetYaw:145, targetPitch:0 }
-            ]
-        },
-
-        /* اتاق هفتم (room7) - دکمه به سمت چپ‌تر منتقل شد (yaw: -25.0) */
-        room7: {
-            type:"equirectangular",
-            panorama:"room7.png",
-            hotSpots:[
-                { pitch:0, yaw:-80, type:"scene", text:"برو اتاق ششم", sceneId:"room6", targetYaw:300, targetPitch:0 },
-                { pitch:0, yaw:55, type:"scene", text:"برو اتاق نهم", sceneId:"room9", targetYaw:50, targetPitch:0 },
                 {
-                    pitch: -1.5,
-                    yaw: -50,  
-                    cssClass: "custom-hotspot",
-                    createTooltipFunc: createInfoHotspot,
-                    createTooltipArgs: {
-                        image: "monitor-details.png",
-                        title: "جزئیات مانیتور پیشخوان",
-                        desc: "در این مانیتور اطلاعات مربوط به سفارش مشتریان، وضعیت نان‌های آماده و منوی دیجیتال قابل مشاهده است."
-                    }
+                    pitch:-5,
+                    yaw:60,
+                    type:"scene",
+                    text:"برو اتاق چهارم",
+                    sceneId:"room4",
+                    targetYaw:75,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:-5,
+                    yaw:170,
+                    type:"scene",
+                    text:"برو اتاق دوم",
+                    sceneId:"room2",
+                    targetYaw:165,
+                    targetPitch:0
                 }
             ]
         },
 
-        room8:{
+
+        room2: {
             type:"equirectangular",
+            panorama:"room2.png",
+
+            hotSpots:[
+                {
+                    pitch:0,
+                    yaw:0,
+                    type:"scene",
+                    text:"برو اتاق اول",
+                    sceneId:"room1",
+                    targetYaw:360,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:0,
+                    yaw:65,
+                    type:"scene",
+                    text:"برو اتاق سوم",
+                    sceneId:"room3",
+                    targetYaw:78,
+                    targetPitch:0
+                }
+            ]
+        },
+
+
+        room3: {
+            type:"equirectangular",
+            panorama:"room3.png",
+
+            hotSpots:[
+                {
+                    pitch:0,
+                    yaw:-120,
+                    type:"scene",
+                    text:"برو اتاق دوم",
+                    sceneId:"room2",
+                    targetYaw:210,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:0,
+                    yaw:-180,
+                    type:"scene",
+                    text:"برو اتاق ششم",
+                    sceneId:"room6",
+                    targetYaw:180,
+                    targetPitch:0
+                }
+            ]
+        },
+
+
+        room4: {
+            type:"equirectangular",
+            panorama:"room4.png",
+
+            hotSpots:[
+                {
+                    pitch:0,
+                    yaw:-110,
+                    type:"scene",
+                    text:"برو اتاق اول",
+                    sceneId:"room1",
+                    targetYaw:250,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:0,
+                    yaw:86,
+                    type:"scene",
+                    text:"برو اتاق پنجم",
+                    sceneId:"room5",
+                    targetYaw:100,
+                    targetPitch:0
+                }
+            ]
+        },
+
+
+        room5: {
+            type:"equirectangular",
+            panorama:"room5.png",
+
+            hotSpots:[
+                {
+                    pitch:0,
+                    yaw:-93,
+                    type:"scene",
+                    text:"برو اتاق چهارم",
+                    sceneId:"room4",
+                    targetYaw:275,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:0,
+                    yaw:115,
+                    type:"scene",
+                    text:"برو اتاق هشتم",
+                    sceneId:"room8",
+                    targetYaw:120,
+                    targetPitch:0
+                }
+            ]
+        },
+
+
+        room6: {
+            type:"equirectangular",
+            panorama:"room6.png",
+
+            hotSpots:[
+                {
+                    pitch:0,
+                    yaw:-7,
+                    type:"scene",
+                    text:"برو اتاق سوم",
+                    sceneId:"room3",
+                    targetYaw:360,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:0,
+                    yaw:120,
+                    type:"scene",
+                    text:"برو اتاق هفتم",
+                    sceneId:"room7",
+                    targetYaw:145,
+                    targetPitch:0
+                }
+            ]
+        },
+
+
+        /* ================================================= */
+        /* ROOM 7                                           */
+        /* ================================================= */
+
+        room7: {
+
+            type:"equirectangular",
+
+            panorama:"room7.png",
+
+            hotSpots:[
+
+                {
+                    pitch:0,
+                    yaw:-80,
+                    type:"scene",
+                    text:"برو اتاق ششم",
+                    sceneId:"room6",
+                    targetYaw:300,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:0,
+                    yaw:55,
+                    type:"scene",
+                    text:"برو اتاق نهم",
+                    sceneId:"room9",
+                    targetYaw:50,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:-1.5,
+                    yaw:-50,
+
+                    cssClass:"custom-hotspot",
+
+                    createTooltipFunc:createInfoHotspot,
+
+                    createTooltipArgs:{
+
+                        /*
+                         * تصویر اولیه‌ای که در Popup
+                         * نمایش داده می‌شود.
+                         */
+
+                        image:"monitor-details.png",
+
+                        title:"جزئیات مانیتور پیشخوان",
+
+                        desc:
+                            "در این مانیتور اطلاعات مربوط به سفارش مشتریان، وضعیت نان‌های آماده و منوی دیجیتال قابل مشاهده است."
+                    }
+                }
+
+            ]
+        },
+
+
+        room8: {
+
+            type:"equirectangular",
+
             panorama:"room8.png",
+
             hotSpots:[
-                { pitch:0, yaw:-60, type:"scene", text:"برو اتاق پنجم", sceneId:"room5", targetYaw:290, targetPitch:0 },
-                { pitch:0, yaw:60, type:"scene", text:"برو اتاق دهم", sceneId:"room10", targetYaw:210, targetPitch:0 }
+
+                {
+                    pitch:0,
+                    yaw:-60,
+                    type:"scene",
+                    text:"برو اتاق پنجم",
+                    sceneId:"room5",
+                    targetYaw:290,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:0,
+                    yaw:60,
+                    type:"scene",
+                    text:"برو اتاق دهم",
+                    sceneId:"room10",
+                    targetYaw:210,
+                    targetPitch:0
+                }
+
             ]
         },
 
-        room9:{
+
+        room9: {
+
             type:"equirectangular",
+
             panorama:"room9.png",
+
             hotSpots:[
-                { pitch:0, yaw:-120, type:"scene", text:"برو اتاق هفتم", sceneId:"room7", targetYaw:200, targetPitch:0 },
-                { pitch:0, yaw:122, type:"scene", text:"برو اتاق یازدهم", sceneId:"room11", targetYaw:-47, targetPitch:0 }
+
+                {
+                    pitch:0,
+                    yaw:-120,
+                    type:"scene",
+                    text:"برو اتاق هفتم",
+                    sceneId:"room7",
+                    targetYaw:200,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:0,
+                    yaw:122,
+                    type:"scene",
+                    text:"برو اتاق یازدهم",
+                    sceneId:"room11",
+                    targetYaw:-47,
+                    targetPitch:0
+                }
+
             ]
         },
 
-        room10:{
+
+        room10: {
+
             type:"equirectangular",
+
             panorama:"room10.png",
+
             hotSpots:[
-                { pitch:0, yaw:-112, type:"scene", text:"برو اتاق هشتم", sceneId:"room8", targetYaw:-140, targetPitch:0 },
-                { pitch:0, yaw:-178, type:"scene", text:"برو اتاق یازدهم", sceneId:"room11", targetYaw:320, targetPitch:0 }
+
+                {
+                    pitch:0,
+                    yaw:-112,
+                    type:"scene",
+                    text:"برو اتاق هشتم",
+                    sceneId:"room8",
+                    targetYaw:-140,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:0,
+                    yaw:-178,
+                    type:"scene",
+                    text:"برو اتاق یازدهم",
+                    sceneId:"room11",
+                    targetYaw:320,
+                    targetPitch:0
+                }
+
             ]
         },
 
-        room11:{
+
+        room11: {
+
             type:"equirectangular",
+
             panorama:"room11.png",
+
             hotSpots:[
-                { pitch:0, yaw:5, type:"scene", text:"برو اتاق دهم", sceneId:"room10", targetYaw:210, targetPitch:0 },
-                { pitch:0, yaw:-47, type:"scene", text:"برو اتاق نهم", sceneId:"room9", targetYaw:300, targetPitch:0 }
+
+                {
+                    pitch:0,
+                    yaw:5,
+                    type:"scene",
+                    text:"برو اتاق دهم",
+                    sceneId:"room10",
+                    targetYaw:210,
+                    targetPitch:0
+                },
+
+                {
+                    pitch:0,
+                    yaw:-47,
+                    type:"scene",
+                    text:"برو اتاق نهم",
+                    sceneId:"room9",
+                    targetYaw:300,
+                    targetPitch:0
+                }
+
             ]
         }
-    }            
+
+    }
+
 });
 
+
+/* ========================================================= */
+/* ساخت Hotspot اطلاعات                                      */
+/* ========================================================= */
+
 function createInfoHotspot(hotSpotDiv, args) {
+
     hotSpotDiv.classList.add('info-hotspot');
+
     hotSpotDiv.innerHTML = '!';
 
     hotSpotDiv.addEventListener('click', function() {
-        openModal(args.image, args.title, args.desc);
+
+        openModal(
+            args.image,
+            args.title,
+            args.desc
+        );
+
     });
+
 }
+
+
+/* ========================================================= */
+/* باز کردن Popup                                             */
+/* ========================================================= */
 
 function openModal(imageSrc, title, desc) {
+
     document.getElementById('modalImg').src = imageSrc;
+
     document.getElementById('modalTitle').innerText = title;
+
     document.getElementById('modalDesc').innerText = desc;
-    document.getElementById('infoModal').classList.add('active');
+
+    document
+        .getElementById('infoModal')
+        .classList.add('active');
 }
+
+
+/* ========================================================= */
+/* بستن Popup                                                 */
+/* ========================================================= */
 
 function closeModal() {
-    document.getElementById('infoModal').classList.remove('active');
+
+    document
+        .getElementById('infoModal')
+        .classList.remove('active');
+
 }
 
-document.getElementById('closeModal').addEventListener('click', closeModal);
-document.getElementById('infoModal').addEventListener('click', function(e) {
-    if (e.target === this) {
+
+document
+    .getElementById('closeModal')
+    .addEventListener('click', closeModal);
+
+
+document
+    .getElementById('infoModal')
+    .addEventListener('click', function(e) {
+
+        if (e.target === this) {
+
+            closeModal();
+
+        }
+
+    });
+
+
+/* ========================================================= */
+/* باز کردن نمایشگر مانیتورها                                */
+/* ========================================================= */
+
+document
+    .getElementById('monitorImgBtn')
+    .addEventListener('click', function() {
+
         closeModal();
+
+        openMonitorViewer();
+
+    });
+
+
+/* ========================================================= */
+/* متغیرهای Monitor Viewer                                    */
+/* ========================================================= */
+
+const monitorViewer =
+    document.getElementById('monitorViewer');
+
+const monitorImage =
+    document.getElementById('monitorImage');
+
+const monitorCounter =
+    document.getElementById('monitorCounter');
+
+
+/*
+ * ترتیب مانیتورها
+ *
+ * بسیار مهم:
+ * ترتیب آرایه دقیقاً همان ترتیب نمایش است.
+ */
+
+const monitorImages = [
+
+    'monitor1.png',
+    'monitor2.png',
+    'monitor3.png',
+    'monitor4.png',
+    'monitor5.png',
+    'monitor6.png'
+
+];
+
+
+/*
+ * شماره مانیتور فعلی
+ *
+ * 0 = monitor1
+ * 1 = monitor2
+ * ...
+ * 5 = monitor6
+ */
+
+let currentMonitorIndex = 0;
+
+
+/* ========================================================= */
+/* باز کردن Monitor Viewer                                   */
+/* ========================================================= */
+
+function openMonitorViewer() {
+
+    currentMonitorIndex = 0;
+
+    updateMonitorImage();
+
+    monitorViewer.classList.add('active');
+
+}
+
+
+/* ========================================================= */
+/* بستن Monitor Viewer                                       */
+/* ========================================================= */
+
+function closeMonitorViewer() {
+
+    monitorViewer.classList.remove('active');
+
+}
+
+
+document
+    .getElementById('closeMonitorViewer')
+    .addEventListener(
+        'click',
+        closeMonitorViewer
+    );
+
+
+/* ========================================================= */
+/* تغییر تصویر مانیتور                                       */
+/* ========================================================= */
+
+function updateMonitorImage() {
+
+    const imageName =
+        monitorImages[currentMonitorIndex];
+
+    monitorImage.style.opacity = '0';
+
+    setTimeout(function() {
+
+        monitorImage.src = imageName;
+
+        monitorImage.onload = function() {
+
+            monitorImage.style.opacity = '1';
+
+        };
+
+    }, 80);
+
+
+    const persianNumber =
+        convertToPersianNumber(
+            currentMonitorIndex + 1
+        );
+
+    monitorCounter.innerText =
+        'مانیتور ' +
+        persianNumber +
+        ' از ۶';
+
+}
+
+
+/* ========================================================= */
+/* تبدیل عدد انگلیسی به فارسی                                */
+/* ========================================================= */
+
+function convertToPersianNumber(number) {
+
+    const numbers = [
+        '۰',
+        '۱',
+        '۲',
+        '۳',
+        '۴',
+        '۵',
+        '۶',
+        '۷',
+        '۸',
+        '۹'
+    ];
+
+    return number
+        .toString()
+        .split('')
+        .map(function(char) {
+
+            return numbers[parseInt(char)];
+
+        })
+        .join('');
+
+}
+
+
+/* ========================================================= */
+/* مانیتور بعدی                                              */
+/* ========================================================= */
+
+function nextMonitor() {
+
+    if (
+        currentMonitorIndex >=
+        monitorImages.length - 1
+    ) {
+
+        return;
+
     }
-});
 
-document.getElementById('monitorImgBtn').addEventListener('click', function() {
-    document.getElementById('fullscreenView').classList.add('active');
-});
+    currentMonitorIndex++;
 
-document.getElementById('closeFullscreen').addEventListener('click', function() {
-    document.getElementById('fullscreenView').classList.remove('active');
-});
+    updateMonitorImage();
 
-document.getElementById('excelBtn').addEventListener('click', function() {
-    document.getElementById('excelView').classList.add('active');
-});
+}
 
-document.getElementById('closeExcel').addEventListener('click', function() {
-    document.getElementById('excelView').classList.remove('active');
-});
 
-/* مدیریت سوئیچ بین صفحات اکسل (Sheet1 و Sheet2) */
-const excelImg = document.getElementById('excelImg');
-const btnSheet1 = document.getElementById('btnSheet1');
-const btnSheet2 = document.getElementById('btnSheet2');
+/* ========================================================= */
+/* مانیتور قبلی                                              */
+/* ========================================================= */
 
-btnSheet1.addEventListener('click', function() {
-    excelImg.src = 'excel-view.jpg';
-    btnSheet1.classList.add('active-page');
-    btnSheet2.classList.remove('active-page');
-});
+function previousMonitor() {
 
-btnSheet2.addEventListener('click', function() {
-    excelImg.src = 'excel-view-page2.jpg';
-    btnSheet2.classList.add('active-page');
-    btnSheet1.classList.remove('active-page');
-});
+    if (currentMonitorIndex <= 0) {
 
-document.getElementById('panorama').addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-    const coords = viewer.mouseEventToCoords(e);
-    console.log("Pitch: " + coords[0].toFixed(2) + " | Yaw: " + coords[1].toFixed(2));
-});
+        return;
 
-viewer.on("scenechange", function (sceneId) {
-    setTimeout(function () {
-        const box = document.querySelector(".pnlm-load-box");
-        const p = box ? box.querySelector("p:first-child") : null;
-        if (box) box.classList.add("loading-text");
-        if (p && sceneTexts[sceneId]) p.textContent = sceneTexts[sceneId];
-    }, 10);
-});
+    }
 
-const loadButtonWatcher = setInterval(function () {
-    const btn = document.querySelector(".pnlm-load-button");
-    if (btn) {
-        btn.addEventListener("click", function () {
-            const waitForBox = setInterval(function () {
-                const box = document.querySelector(".pnlm-load-box");
-                const p = box ? box.querySelector("p:first-child") : null;
-                if (box && p) {
-                    box.classList.add("loading-text");
-                    p.textContent = sceneTexts["room1"];
-                    clearInterval(waitForBox);
+    currentMonitorIndex--;
+
+    updateMonitorImage();
+
+}
+
+
+/* ========================================================= */
+/* Mouse Drag + Touch Swipe                                  */
+/* ========================================================= */
+
+let startX = 0;
+let startY = 0;
+
+let currentX = 0;
+let currentY = 0;
+
+let isDragging = false;
+
+let hasMoved = false;
+
+
+/*
+ * حداقل مقدار حرکتی که برای Swipe لازم است.
+ *
+ * اگر مثلاً کاربر فقط 5px حرکت کند،
+ * آن را Swipe حساب نمی‌کنیم.
+ */
+
+const swipeThreshold = 70;
+
+
+/* ========================================================= */
+/* شروع Touch                                               */
+/* ========================================================= */
+
+monitorViewer.addEventListener(
+    'touchstart',
+    function(e) {
+
+        if (!monitorViewer.classList.contains('active')) {
+
+            return;
+
+        }
+
+        if (!e.touches || e.touches.length === 0) {
+
+            return;
+
+        }
+
+        const touch = e.touches[0];
+
+        startX = touch.clientX;
+
+        startY = touch.clientY;
+
+        currentX = startX;
+
+        currentY = startY;
+
+        isDragging = true;
+
+        hasMoved = false;
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* ========================================================= */
+/* حرکت Touch                                               */
+/* ========================================================= */
+
+monitorViewer.addEventListener(
+    'touchmove',
+    function(e) {
+
+        if (!isDragging) {
+
+            return;
+
+        }
+
+        if (!e.touches || e.touches.length === 0) {
+
+            return;
+
+        }
+
+        const touch = e.touches[0];
+
+        currentX = touch.clientX;
+
+        currentY = touch.clientY;
+
+        const diffX =
+            currentX - startX;
+
+        const diffY =
+            currentY - startY;
+
+
+        /*
+         * اگر حرکت افقی بیشتر از عمودی باشد،
+         * یعنی کاربر احتمالاً Swipe افقی انجام داده.
+         */
+
+        if (
+            Math.abs(diffX) >
+            Math.abs(diffY)
+        ) {
+
+            if (
+                Math.abs(diffX) >
+                10
+            ) {
+
+                hasMoved = true;
+
+            }
+
+        }
+
+    },
+    {
+        passive:true
+    }
+);
+
+
+/* ========================================================= */
+/* پایان Touch                                               */
+/* ========================================================= */
+
+monitorViewer.addEventListener(
+    'touchend',
+    function() {
+
+        if (!isDragging) {
+
+            return;
+
+        }
+
+        isDragging = false;
+
+
+        const diffX =
+            currentX - startX;
+
+        const diffY =
+            currentY - startY;
+
+
+        /*
+         * فقط Swipe افقی را بررسی می‌کنیم.
+         */
+
+        if (
+            Math.abs(diffX) <
+            swipeThreshold
+        ) {
+
+            return;
+
+        }
+
+        if (
+            Math.abs(diffX) <=
+            Math.abs(diffY)
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+         * راست → چپ
+         *
+         * diffX منفی است.
+         *
+         * یعنی مانیتور بعدی.
+         */
+
+        if (diffX < 0) {
+
+            nextMonitor();
+
+        }
+
+
+        /*
+         * چپ → راست
+         *
+         * diffX مثبت است.
+         *
+         * یعنی مانیتور قبلی.
+         */
+
+        else {
+
+            previousMonitor();
+
+        }
+
+    }
+);
+
+
+/* ========================================================= */
+/* شروع Mouse Drag                                          */
+/* ========================================================= */
+
+monitorViewer.addEventListener(
+    'mousedown',
+    function(e) {
+
+        /*
+         * فقط Left Click
+         */
+
+        if (e.button !== 0) {
+
+            return;
+
+        }
+
+        if (!monitorViewer.classList.contains('active')) {
+
+            return;
+
+        }
+
+        startX = e.clientX;
+
+        startY = e.clientY;
+
+        currentX = startX;
+
+        currentY = startY;
+
+        isDragging = true;
+
+        hasMoved = false;
+
+        monitorImage.classList.add('dragging');
+
+    }
+);
+
+
+/* ========================================================= */
+/* حرکت Mouse                                               */
+/* ========================================================= */
+
+window.addEventListener(
+    'mousemove',
+    function(e) {
+
+        if (!isDragging) {
+
+            return;
+
+        }
+
+        currentX = e.clientX;
+
+        currentY = e.clientY;
+
+        const diffX =
+            currentX - startX;
+
+        const diffY =
+            currentY - startY;
+
+
+        if (
+            Math.abs(diffX) >
+            Math.abs(diffY)
+        ) {
+
+            if (
+                Math.abs(diffX) >
+                10
+            ) {
+
+                hasMoved = true;
+
+            }
+
+        }
+
+    }
+);
+
+
+/* ========================================================= */
+/* پایان Mouse Drag                                          */
+/* ========================================================= */
+
+window.addEventListener(
+    'mouseup',
+    function() {
+
+        if (!isDragging) {
+
+            return;
+
+        }
+
+        isDragging = false;
+
+        monitorImage.classList.remove('dragging');
+
+
+        const diffX =
+            currentX - startX;
+
+        const diffY =
+            currentY - startY;
+
+
+        /*
+         * اگر حرکت کافی نبوده،
+         * هیچ کاری نکن.
+         */
+
+        if (
+            Math.abs(diffX) <
+            swipeThreshold
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+         * اگر حرکت عمودی بیشتر بوده،
+         * Drag افقی محسوب نمی‌شود.
+         */
+
+        if (
+            Math.abs(diffX) <=
+            Math.abs(diffY)
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+         * Drag راست به چپ
+         * = مانیتور بعدی
+         */
+
+        if (diffX < 0) {
+
+            nextMonitor();
+
+        }
+
+
+        /*
+         * Drag چپ به راست
+         * = مانیتور قبلی
+         */
+
+        else {
+
+            previousMonitor();
+
+        }
+
+    }
+);
+
+
+/* ========================================================= */
+/* جلوگیری از Drag شدن خود Image توسط مرورگر                 */
+/* ========================================================= */
+
+monitorImage.addEventListener(
+    'dragstart',
+    function(e) {
+
+        e.preventDefault();
+
+    }
+);
+
+
+/* ========================================================= */
+/* بستن با Escape                                            */
+/* ========================================================= */
+
+document.addEventListener(
+    'keydown',
+    function(e) {
+
+        if (e.key === 'Escape') {
+
+            if (
+                monitorViewer.classList.contains('active')
+            ) {
+
+                closeMonitorViewer();
+
+            }
+
+        }
+
+    }
+);
+
+
+/* ========================================================= */
+/* جلوگیری از Context Menu روی Monitor Viewer                */
+/* ========================================================= */
+
+monitorViewer.addEventListener(
+    'contextmenu',
+    function(e) {
+
+        e.preventDefault();
+
+    }
+);
+
+
+/* ========================================================= */
+/* کنترل اکسل                                                */
+/* ========================================================= */
+
+const excelImg =
+    document.getElementById('excelImg');
+
+const btnSheet1 =
+    document.getElementById('btnSheet1');
+
+const btnSheet2 =
+    document.getElementById('btnSheet2');
+
+
+btnSheet1.addEventListener(
+    'click',
+    function() {
+
+        excelImg.src =
+            'excel-view.jpg';
+
+        btnSheet1.classList.add(
+            'active-page'
+        );
+
+        btnSheet2.classList.remove(
+            'active-page'
+        );
+
+    }
+);
+
+
+btnSheet2.addEventListener(
+    'click',
+    function() {
+
+        excelImg.src =
+            'excel-view-page2.jpg';
+
+        btnSheet2.classList.add(
+            'active-page'
+        );
+
+        btnSheet1.classList.remove(
+            'active-page'
+        );
+
+    }
+);
+
+
+/* ========================================================= */
+/* گرفتن مختصات Hotspot با Right Click                       */
+/* ========================================================= */
+
+document
+    .getElementById('panorama')
+    .addEventListener(
+        'contextmenu',
+        function(e) {
+
+            e.preventDefault();
+
+            const coords =
+                viewer.mouseEventToCoords(e);
+
+            console.log(
+                "Pitch: " +
+                coords[0].toFixed(2) +
+                " | Yaw: " +
+                coords[1].toFixed(2)
+            );
+
+        }
+    );
+
+
+/* ========================================================= */
+/* Scene Change                                              */
+/* ========================================================= */
+
+viewer.on(
+    "scenechange",
+    function(sceneId) {
+
+        setTimeout(
+            function() {
+
+                const box =
+                    document.querySelector(
+                        ".pnlm-load-box"
+                    );
+
+                const p =
+                    box
+                        ? box.querySelector("p:first-child")
+                        : null;
+
+
+                if (box) {
+
+                    box.classList.add(
+                        "loading-text"
+                    );
+
                 }
-            }, 10);
-        }, { once: true });
-        clearInterval(loadButtonWatcher);
-    }
-}, 10);
 
-viewer.on("load", function () {
-    setTimeout(function () {
-        const box = document.querySelector(".pnlm-load-box");
-        if (box) box.classList.remove("loading-text");
-    }, 100);
-});
+
+                if (
+                    p &&
+                    sceneTexts[sceneId]
+                ) {
+
+                    p.textContent =
+                        sceneTexts[sceneId];
+
+                }
+
+            },
+            10
+        );
+
+    }
+);
+
+
+/* ========================================================= */
+/* Loading Button Watcher                                    */
+/* ========================================================= */
+
+const loadButtonWatcher =
+    setInterval(
+        function() {
+
+            const btn =
+                document.querySelector(
+                    ".pnlm-load-button"
+                );
+
+
+            if (btn) {
+
+                btn.addEventListener(
+                    "click",
+                    function() {
+
+                        const waitForBox =
+                            setInterval(
+                                function() {
+
+                                    const box =
+                                        document.querySelector(
+                                            ".pnlm-load-box"
+                                        );
+
+                                    const p =
+                                        box
+                                            ? box.querySelector(
+                                                "p:first-child"
+                                            )
+                                            : null;
+
+
+                                    if (
+                                        box &&
+                                        p
+                                    ) {
+
+                                        box.classList.add(
+                                            "loading-text"
+                                        );
+
+                                        p.textContent =
+                                            sceneTexts["room1"];
+
+                                        clearInterval(
+                                            waitForBox
+                                        );
+
+                                    }
+
+                                },
+                                10
+                            );
+
+                    },
+                    {
+                        once:true
+                    }
+                );
+
+                clearInterval(
+                    loadButtonWatcher
+                );
+
+            }
+
+        },
+        10
+    );
+
+
+/* ========================================================= */
+/* پایان Load                                                */
+/* ========================================================= */
+
+viewer.on(
+    "load",
+    function() {
+
+        setTimeout(
+            function() {
+
+                const box =
+                    document.querySelector(
+                        ".pnlm-load-box"
+                    );
+
+                if (box) {
+
+                    box.classList.remove(
+                        "loading-text"
+                    );
+
+                }
+
+            },
+            100
+        );
+
+    }
+);
+
 </script>
 
 </body>
