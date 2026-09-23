@@ -329,22 +329,24 @@
             overflow:hidden;
         }
 
-        #monitorImage {
-            width:100%;
-            height:100%;
+#monitorImage {
+    width:100%;
+    height:100%;
 
-            object-fit:contain;
+    object-fit:contain;
 
-            display:block;
+    display:block;
 
-            user-select:none;
-            -webkit-user-drag:none;
-            -webkit-user-select:none;
+    user-select:none;
+    -webkit-user-drag:none;
+    -webkit-user-select:none;
 
-            cursor:grab;
+    cursor:grab;
 
-            transition:transform 0.25s ease, opacity 0.2s ease;
-        }
+    transition:
+        transform 0.35s ease,
+        opacity 0.35s ease;
+}
 
         #monitorImage.dragging {
             cursor:grabbing;
@@ -1330,19 +1332,35 @@ function updateMonitorImage() {
     const imageName =
         monitorImages[currentMonitorIndex];
 
+
+    /*
+     * شروع افکت خروج تصویر فعلی
+     *
+     * تصویر کمی کوچک و محو می‌شود.
+     */
+
     monitorImage.style.opacity = '0';
+    monitorImage.style.transform = 'scale(0.96)';
+
 
     setTimeout(function() {
 
         monitorImage.src = imageName;
 
+
         monitorImage.onload = function() {
 
+            /*
+             * تصویر جدید با Fade + Zoom
+             * وارد صفحه می‌شود.
+             */
+
             monitorImage.style.opacity = '1';
+            monitorImage.style.transform = 'scale(1)';
 
         };
 
-    }, 80);
+    }, 180);
 
 
     const persianNumber =
@@ -1350,13 +1368,13 @@ function updateMonitorImage() {
             currentMonitorIndex + 1
         );
 
+
     monitorCounter.innerText =
         'مانیتور ' +
         persianNumber +
         ' از ۶';
 
 }
-
 
 /* ========================================================= */
 /* تبدیل عدد انگلیسی به فارسی                                */
