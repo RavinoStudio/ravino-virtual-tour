@@ -327,29 +327,59 @@
             align-items:center;
 
             overflow:hidden;
+
+            cursor:grab;
+
+            touch-action:pan-y;
+
+            user-select:none;
+            -webkit-user-select:none;
         }
 
-#monitorImage {
-    width:100%;
-    height:100%;
-
-    object-fit:contain;
-
-    display:block;
-
-    user-select:none;
-    -webkit-user-drag:none;
-    -webkit-user-select:none;
-
-    cursor:grab;
-
-    transition:
-        transform 0.35s ease,
-        opacity 0.35s ease;
-}
-
-        #monitorImage.dragging {
+        .monitor-wrapper.dragging {
             cursor:grabbing;
+        }
+
+        /*
+         * تصویر فعلی و تصویر بعدی روی یکدیگر قرار دارند.
+         *
+         * تصویر فعلی در لایه زیر است.
+         * تصویر دوم فقط به اندازه Drag کاربر نمایش داده می‌شود.
+         */
+
+        #monitorImage,
+        #monitorNextImage {
+
+            position:absolute;
+
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            object-fit:contain;
+
+            display:block;
+
+            user-select:none;
+            -webkit-user-select:none;
+            -webkit-user-drag:none;
+
+            pointer-events:none;
+        }
+
+        #monitorImage {
+            z-index:1;
+        }
+
+        #monitorNextImage {
+            z-index:2;
+
+            opacity:0;
+
+            clip-path:inset(0 0 0 100%);
+            -webkit-clip-path:inset(0 0 0 100%);
 
             transition:none;
         }
@@ -671,6 +701,13 @@
         <img
             id="monitorImage"
             src="monitor1.png"
+            alt="Monitor"
+            draggable="false"
+        >
+
+        <img
+            id="monitorNextImage"
+            src=""
             alt="Monitor"
             draggable="false"
         >
@@ -1251,8 +1288,14 @@ document
 const monitorViewer =
     document.getElementById('monitorViewer');
 
+const monitorWrapper =
+    document.querySelector('.monitor-wrapper');
+
 const monitorImage =
     document.getElementById('monitorImage');
+
+const monitorNextImage =
+    document.getElementById('monitorNextImage');
 
 const monitorCounter =
     document.getElementById('monitorCounter');
@@ -1290,6 +1333,71 @@ let currentMonitorIndex = 0;
 
 
 /* ========================================================= */
+/* تنظیمات Drag                                              */
+/* ========================================================= */
+
+/*
+ * درصدی از عرض صفحه که کاربر باید Drag کند
+ * تا مانیتور تغییر کند.
+ *
+ * 0.35 = 35 درصد
+ */
+
+const monitorChangeThreshold = 0.35;
+
+
+/*
+ * حداقل حرکت افقی برای اینکه
+ * Drag واقعی در نظر گرفته شود.
+ */
+
+const monitorDragStartThreshold = 8;
+
+
+/* ========================================================= */
+/* وضعیت Drag                                                */
+/* ========================================================= */
+
+let isDragging = false;
+
+let dragStarted = false;
+
+let dragDirection = 0;
+
+let startX = 0;
+
+let startY = 0;
+
+let currentX = 0;
+
+let currentY = 0;
+
+let dragProgress = 0;
+
+let activePointerId = null;
+
+
+/* ========================================================= */
+/* Preload تصاویر مانیتورها                                  */
+/* ========================================================= */
+
+/*
+ * تصاویر از قبل Load می‌شوند تا هنگام Drag
+ * با تأخیر در نمایش تصویر بعدی مواجه نشویم.
+ */
+
+monitorImages.forEach(function(imageSrc) {
+
+    const image =
+        new Image();
+
+    image.src =
+        imageSrc;
+
+});
+
+
+/* ========================================================= */
 /* باز کردن Monitor Viewer                                   */
 /* ========================================================= */
 
@@ -1297,7 +1405,10 @@ function openMonitorViewer() {
 
     currentMonitorIndex = 0;
 
-    updateMonitorImage();
+    monitorImage.src =
+        monitorImages[currentMonitorIndex];
+
+    resetMonitorDrag();
 
     monitorViewer.classList.add('active');
 
@@ -1312,6 +1423,8 @@ function closeMonitorViewer() {
 
     monitorViewer.classList.remove('active');
 
+    resetMonitorDrag();
+
 }
 
 
@@ -1322,59 +1435,6 @@ document
         closeMonitorViewer
     );
 
-
-/* ========================================================= */
-/* تغییر تصویر مانیتور                                       */
-/* ========================================================= */
-
-function updateMonitorImage() {
-
-    const imageName =
-        monitorImages[currentMonitorIndex];
-
-
-    /*
-     * شروع افکت خروج تصویر فعلی
-     *
-     * تصویر کمی کوچک و محو می‌شود.
-     */
-
-    monitorImage.style.opacity = '0';
-    monitorImage.style.transform = 'scale(0.96)';
-
-
-    setTimeout(function() {
-
-        monitorImage.src = imageName;
-
-
-        monitorImage.onload = function() {
-
-            /*
-             * تصویر جدید با Fade + Zoom
-             * وارد صفحه می‌شود.
-             */
-
-            monitorImage.style.opacity = '1';
-            monitorImage.style.transform = 'scale(1)';
-
-        };
-
-    }, 180);
-
-
-    const persianNumber =
-        convertToPersianNumber(
-            currentMonitorIndex + 1
-        );
-
-
-    monitorCounter.innerText =
-        'مانیتور ' +
-        persianNumber +
-        ' از ۶';
-
-}
 
 /* ========================================================= */
 /* تبدیل عدد انگلیسی به فارسی                                */
@@ -1409,188 +1469,693 @@ function convertToPersianNumber(number) {
 
 
 /* ========================================================= */
-/* مانیتور بعدی                                              */
+/* بروزرسانی شماره مانیتور                                   */
 /* ========================================================= */
 
-function nextMonitor() {
+function updateMonitorCounter() {
+
+    const persianNumber =
+        convertToPersianNumber(
+            currentMonitorIndex + 1
+        );
+
+    monitorCounter.innerText =
+        'مانیتور ' +
+        persianNumber +
+        ' از ۶';
+
+}
+
+
+/* ========================================================= */
+/* آماده کردن تصویر بعدی                                     */
+/* ========================================================= */
+
+function prepareNextMonitor(direction) {
+
+    let targetIndex;
+
+
+    /*
+     * راست به چپ
+     * = مانیتور بعدی
+     */
+
+    if (direction === -1) {
+
+        targetIndex =
+            currentMonitorIndex + 1;
+
+        if (
+            targetIndex >=
+            monitorImages.length
+        ) {
+
+            return false;
+
+        }
+
+
+        monitorNextImage.src =
+            monitorImages[targetIndex];
+
+
+        /*
+         * تصویر جدید از سمت راست شروع می‌شود.
+         */
+
+        monitorNextImage.style.clipPath =
+            'inset(0 0 0 100%)';
+
+        monitorNextImage.style.webkitClipPath =
+            'inset(0 0 0 100%)';
+
+    }
+
+
+    /*
+     * چپ به راست
+     * = مانیتور قبلی
+     */
+
+    else if (direction === 1) {
+
+        targetIndex =
+            currentMonitorIndex - 1;
+
+        if (
+            targetIndex < 0
+        ) {
+
+            return false;
+
+        }
+
+
+        monitorNextImage.src =
+            monitorImages[targetIndex];
+
+
+        /*
+         * تصویر قبلی از سمت چپ شروع می‌شود.
+         */
+
+        monitorNextImage.style.clipPath =
+            'inset(0 100% 0 0)';
+
+        monitorNextImage.style.webkitClipPath =
+            'inset(0 100% 0 0)';
+
+    }
+
+
+    monitorNextImage.style.transition =
+        'none';
+
+    monitorNextImage.style.opacity =
+        '1';
+
+    return true;
+
+}
+
+
+/* ========================================================= */
+/* بروزرسانی تصویر هنگام Drag                                */
+/* ========================================================= */
+
+function updateMonitorDrag(diffX) {
+
+    if (!isDragging) {
+
+        return;
+
+    }
+
+
+    /*
+     * مشخص کردن جهت حرکت
+     */
+
+    let newDirection = 0;
+
+    if (diffX < 0) {
+
+        newDirection = -1;
+
+    }
+    else if (diffX > 0) {
+
+        newDirection = 1;
+
+    }
+    else {
+
+        return;
+
+    }
+
+
+    /*
+     * اگر جهت Drag عوض شده باشد،
+     * تصویر مقصد را دوباره آماده می‌کنیم.
+     */
 
     if (
+        dragDirection !== newDirection
+    ) {
+
+        dragDirection =
+            newDirection;
+
+        dragProgress =
+            0;
+
+        const prepared =
+            prepareNextMonitor(
+                dragDirection
+            );
+
+
+        if (!prepared) {
+
+            monitorNextImage.style.opacity =
+                '0';
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+     * اگر به آخر لیست رسیده‌ایم،
+     * مانیتور بعدی وجود ندارد.
+     */
+
+    if (
+        dragDirection === -1 &&
         currentMonitorIndex >=
         monitorImages.length - 1
+    ) {
+
+        monitorNextImage.style.opacity =
+            '0';
+
+        dragProgress = 0;
+
+        return;
+
+    }
+
+
+    /*
+     * اگر به اول لیست رسیده‌ایم،
+     * مانیتور قبلی وجود ندارد.
+     */
+
+    if (
+        dragDirection === 1 &&
+        currentMonitorIndex <= 0
+    ) {
+
+        monitorNextImage.style.opacity =
+            '0';
+
+        dragProgress = 0;
+
+        return;
+
+    }
+
+
+    /*
+     * عرض واقعی Viewer
+     */
+
+    const wrapperWidth =
+        monitorWrapper.clientWidth;
+
+
+    if (
+        wrapperWidth <= 0
     ) {
 
         return;
 
     }
 
-    currentMonitorIndex++;
 
-    updateMonitorImage();
+    /*
+     * مقدار Drag نسبت به عرض صفحه
+     */
+
+    let progress =
+        Math.abs(diffX) /
+        wrapperWidth;
+
+
+    /*
+     * بیشتر از 100 درصد نشود.
+     */
+
+    progress =
+        Math.min(
+            progress,
+            1
+        );
+
+
+    dragProgress =
+        progress;
+
+
+    /*
+     * درصدی که باید تصویر مقصد دیده شود.
+     */
+
+    const visiblePercent =
+        progress * 100;
+
+
+    /*
+     * راست به چپ
+     *
+     * تصویر بعدی از سمت راست وارد می‌شود.
+     */
+
+    if (
+        dragDirection === -1
+    ) {
+
+        const hiddenPercent =
+            100 - visiblePercent;
+
+
+        const clip =
+            'inset(0 0 0 ' +
+            hiddenPercent +
+            '%)';
+
+
+        monitorNextImage.style.clipPath =
+            clip;
+
+        monitorNextImage.style.webkitClipPath =
+            clip;
+
+    }
+
+
+    /*
+     * چپ به راست
+     *
+     * تصویر قبلی از سمت چپ وارد می‌شود.
+     */
+
+    else {
+
+        const hiddenPercent =
+            100 - visiblePercent;
+
+
+        const clip =
+            'inset(0 ' +
+            hiddenPercent +
+            '% 0 0)';
+
+
+        monitorNextImage.style.clipPath =
+            clip;
+
+        monitorNextImage.style.webkitClipPath =
+            clip;
+
+    }
 
 }
 
 
 /* ========================================================= */
-/* مانیتور قبلی                                              */
+/* Reset کردن Drag                                           */
 /* ========================================================= */
 
-function previousMonitor() {
+function resetMonitorDrag() {
 
-    if (currentMonitorIndex <= 0) {
+    monitorNextImage.style.transition =
+        'none';
+
+    monitorNextImage.style.opacity =
+        '0';
+
+    monitorNextImage.style.clipPath =
+        'inset(0 0 0 100%)';
+
+    monitorNextImage.style.webkitClipPath =
+        'inset(0 0 0 100%)';
+
+
+    monitorWrapper.classList.remove(
+        'dragging'
+    );
+
+
+    isDragging =
+        false;
+
+    dragStarted =
+        false;
+
+    dragDirection =
+        0;
+
+    dragProgress =
+        0;
+
+    activePointerId =
+        null;
+
+
+    updateMonitorCounter();
+
+}
+
+
+/* ========================================================= */
+/* برگشت Drag به تصویر فعلی                                  */
+/* ========================================================= */
+
+function cancelMonitorDrag() {
+
+    if (
+        dragDirection === 0
+    ) {
+
+        resetMonitorDrag();
 
         return;
 
     }
 
-    currentMonitorIndex--;
 
-    updateMonitorImage();
+    monitorNextImage.style.transition =
+        'clip-path 0.25s ease, -webkit-clip-path 0.25s ease';
+
+
+    if (
+        dragDirection === -1
+    ) {
+
+        monitorNextImage.style.clipPath =
+            'inset(0 0 0 100%)';
+
+        monitorNextImage.style.webkitClipPath =
+            'inset(0 0 0 100%)';
+
+    }
+    else {
+
+        monitorNextImage.style.clipPath =
+            'inset(0 100% 0 0)';
+
+        monitorNextImage.style.webkitClipPath =
+            'inset(0 100% 0 0)';
+
+    }
+
+
+    setTimeout(
+        function() {
+
+            resetMonitorDrag();
+
+        },
+        260
+    );
 
 }
 
 
 /* ========================================================= */
-/* Mouse Drag + Touch Swipe                                  */
+/* کامل کردن تغییر مانیتور                                   */
 /* ========================================================= */
 
-let startX = 0;
-let startY = 0;
+function completeMonitorDrag() {
 
-let currentX = 0;
-let currentY = 0;
-
-let isDragging = false;
-
-let hasMoved = false;
+    monitorNextImage.style.transition =
+        'clip-path 0.25s ease, -webkit-clip-path 0.25s ease';
 
 
-/*
- * حداقل مقدار حرکتی که برای Swipe لازم است.
- *
- * اگر مثلاً کاربر فقط 5px حرکت کند،
- * آن را Swipe حساب نمی‌کنیم.
- */
+    monitorNextImage.style.clipPath =
+        'inset(0 0 0 0)';
 
-const swipeThreshold = 70;
+    monitorNextImage.style.webkitClipPath =
+        'inset(0 0 0 0)';
 
 
-/* ========================================================= */
-/* شروع Touch                                               */
-/* ========================================================= */
-
-monitorViewer.addEventListener(
-    'touchstart',
-    function(e) {
-
-        if (!monitorViewer.classList.contains('active')) {
-
-            return;
-
-        }
-
-        if (!e.touches || e.touches.length === 0) {
-
-            return;
-
-        }
-
-        const touch = e.touches[0];
-
-        startX = touch.clientX;
-
-        startY = touch.clientY;
-
-        currentX = startX;
-
-        currentY = startY;
-
-        isDragging = true;
-
-        hasMoved = false;
-
-    },
-    {
-        passive:true
-    }
-);
-
-
-/* ========================================================= */
-/* حرکت Touch                                               */
-/* ========================================================= */
-
-monitorViewer.addEventListener(
-    'touchmove',
-    function(e) {
-
-        if (!isDragging) {
-
-            return;
-
-        }
-
-        if (!e.touches || e.touches.length === 0) {
-
-            return;
-
-        }
-
-        const touch = e.touches[0];
-
-        currentX = touch.clientX;
-
-        currentY = touch.clientY;
-
-        const diffX =
-            currentX - startX;
-
-        const diffY =
-            currentY - startY;
-
-
-        /*
-         * اگر حرکت افقی بیشتر از عمودی باشد،
-         * یعنی کاربر احتمالاً Swipe افقی انجام داده.
-         */
-
-        if (
-            Math.abs(diffX) >
-            Math.abs(diffY)
-        ) {
+    setTimeout(
+        function() {
 
             if (
-                Math.abs(diffX) >
-                10
+                dragDirection === -1
             ) {
 
-                hasMoved = true;
+                currentMonitorIndex++;
+
+            }
+            else if (
+                dragDirection === 1
+            ) {
+
+                currentMonitorIndex--;
 
             }
 
-        }
 
-    },
-    {
-        passive:true
-    }
-);
+            monitorImage.src =
+                monitorImages[currentMonitorIndex];
+
+
+            updateMonitorCounter();
+
+            resetMonitorDrag();
+
+        },
+        260
+    );
+
+}
 
 
 /* ========================================================= */
-/* پایان Touch                                               */
+/* پایان Drag                                                */
+/* ========================================================= */
+
+function finishMonitorDrag() {
+
+    if (!isDragging) {
+
+        return;
+
+    }
+
+
+    isDragging =
+        false;
+
+
+    monitorWrapper.classList.remove(
+        'dragging'
+    );
+
+
+    /*
+     * اگر Drag واقعی شروع نشده باشد،
+     * کاری انجام نمی‌دهیم.
+     */
+
+    if (!dragStarted) {
+
+        resetMonitorDrag();
+
+        return;
+
+    }
+
+
+    /*
+     * اگر به اندازه کافی Drag شده باشد،
+     * تصویر را کامل عوض می‌کنیم.
+     */
+
+    if (
+        dragProgress >=
+        monitorChangeThreshold
+    ) {
+
+        completeMonitorDrag();
+
+    }
+
+
+    /*
+     * در غیر این صورت برمی‌گردد.
+     */
+
+    else {
+
+        cancelMonitorDrag();
+
+    }
+
+}
+
+
+/* ========================================================= */
+/* شروع Pointer Drag                                         */
 /* ========================================================= */
 
 monitorViewer.addEventListener(
-    'touchend',
-    function() {
+    'pointerdown',
+    function(e) {
 
-        if (!isDragging) {
+        /*
+         * فقط وقتی Viewer باز است.
+         */
+
+        if (
+            !monitorViewer.classList.contains('active')
+        ) {
 
             return;
 
         }
 
-        isDragging = false;
+
+        /*
+         * اگر روی دکمه بستن کلیک شده،
+         * Drag شروع نشود.
+         */
+
+        if (
+            e.target.closest &&
+            e.target.closest('.monitor-close')
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+         * فقط Pointer اصلی.
+         */
+
+        if (
+            e.isPrimary === false
+        ) {
+
+            return;
+
+        }
+
+
+        startX =
+            e.clientX;
+
+        startY =
+            e.clientY;
+
+        currentX =
+            startX;
+
+        currentY =
+            startY;
+
+
+        isDragging =
+            true;
+
+        dragStarted =
+            false;
+
+        dragDirection =
+            0;
+
+        dragProgress =
+            0;
+
+        activePointerId =
+            e.pointerId;
+
+
+        monitorNextImage.style.opacity =
+            '0';
+
+
+        monitorWrapper.classList.add(
+            'dragging'
+        );
+
+
+        /*
+         * Pointer را نگه می‌داریم تا حتی اگر
+         * موس از Viewer خارج شد، Drag قطع نشود.
+         */
+
+        try {
+
+            monitorViewer.setPointerCapture(
+                e.pointerId
+            );
+
+        }
+        catch (error) {
+
+            /*
+             * در صورت پشتیبانی نشدن،
+             * ادامه می‌دهیم.
+             */
+
+        }
+
+    }
+);
+
+
+/* ========================================================= */
+/* حرکت Pointer                                              */
+/* ========================================================= */
+
+monitorViewer.addEventListener(
+    'pointermove',
+    function(e) {
+
+        if (
+            !isDragging
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            activePointerId !== null &&
+            e.pointerId !== activePointerId
+        ) {
+
+            return;
+
+        }
+
+
+        currentX =
+            e.clientX;
+
+        currentY =
+            e.clientY;
 
 
         const diffX =
@@ -1601,141 +2166,117 @@ monitorViewer.addEventListener(
 
 
         /*
-         * فقط Swipe افقی را بررسی می‌کنیم.
+         * تا زمانی که مشخص نشده حرکت افقی است،
+         * هیچ کاری انجام نمی‌دهیم.
          */
 
         if (
-            Math.abs(diffX) <
-            swipeThreshold
-        ) {
-
-            return;
-
-        }
-
-        if (
-            Math.abs(diffX) <=
-            Math.abs(diffY)
-        ) {
-
-            return;
-
-        }
-
-
-        /*
-         * راست → چپ
-         *
-         * diffX منفی است.
-         *
-         * یعنی مانیتور بعدی.
-         */
-
-        if (diffX < 0) {
-
-            nextMonitor();
-
-        }
-
-
-        /*
-         * چپ → راست
-         *
-         * diffX مثبت است.
-         *
-         * یعنی مانیتور قبلی.
-         */
-
-        else {
-
-            previousMonitor();
-
-        }
-
-    }
-);
-
-
-/* ========================================================= */
-/* شروع Mouse Drag                                          */
-/* ========================================================= */
-
-monitorViewer.addEventListener(
-    'mousedown',
-    function(e) {
-
-        /*
-         * فقط Left Click
-         */
-
-        if (e.button !== 0) {
-
-            return;
-
-        }
-
-        if (!monitorViewer.classList.contains('active')) {
-
-            return;
-
-        }
-
-        startX = e.clientX;
-
-        startY = e.clientY;
-
-        currentX = startX;
-
-        currentY = startY;
-
-        isDragging = true;
-
-        hasMoved = false;
-
-        monitorImage.classList.add('dragging');
-
-    }
-);
-
-
-/* ========================================================= */
-/* حرکت Mouse                                               */
-/* ========================================================= */
-
-window.addEventListener(
-    'mousemove',
-    function(e) {
-
-        if (!isDragging) {
-
-            return;
-
-        }
-
-        currentX = e.clientX;
-
-        currentY = e.clientY;
-
-        const diffX =
-            currentX - startX;
-
-        const diffY =
-            currentY - startY;
-
-
-        if (
-            Math.abs(diffX) >
-            Math.abs(diffY)
+            !dragStarted
         ) {
 
             if (
-                Math.abs(diffX) >
-                10
+                Math.abs(diffX) <
+                monitorDragStartThreshold &&
+                Math.abs(diffY) <
+                monitorDragStartThreshold
             ) {
 
-                hasMoved = true;
+                return;
 
             }
+
+
+            /*
+             * اگر حرکت عمودی بیشتر باشد،
+             * این حرکت Drag مانیتور نیست.
+             */
+
+            if (
+                Math.abs(diffY) >
+                Math.abs(diffX)
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * از اینجا به بعد Drag افقی شروع شده.
+             */
+
+            dragStarted =
+                true;
+
+        }
+
+
+        /*
+         * چون Drag افقی شروع شده،
+         * جلوی رفتار پیش‌فرض مرورگر را می‌گیریم.
+         */
+
+        e.preventDefault();
+
+
+        updateMonitorDrag(
+            diffX
+        );
+
+    }
+);
+
+
+/* ========================================================= */
+/* پایان Pointer Drag                                        */
+/* ========================================================= */
+
+monitorViewer.addEventListener(
+    'pointerup',
+    function(e) {
+
+        if (
+            !isDragging
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            activePointerId !== null &&
+            e.pointerId !== activePointerId
+        ) {
+
+            return;
+
+        }
+
+
+        currentX =
+            e.clientX;
+
+        currentY =
+            e.clientY;
+
+
+        finishMonitorDrag();
+
+
+        try {
+
+            monitorViewer.releasePointerCapture(
+                e.pointerId
+            );
+
+        }
+        catch (error) {
+
+            /*
+             * در صورت نبود Pointer Capture
+             * نیاز به کار دیگری نیست.
+             */
 
         }
 
@@ -1744,83 +2285,40 @@ window.addEventListener(
 
 
 /* ========================================================= */
-/* پایان Mouse Drag                                          */
+/* اگر Pointer از دست رفت                                    */
 /* ========================================================= */
 
-window.addEventListener(
-    'mouseup',
+monitorViewer.addEventListener(
+    'pointercancel',
+    function(e) {
+
+        if (
+            !isDragging
+        ) {
+
+            return;
+
+        }
+
+
+        cancelMonitorDrag();
+
+    }
+);
+
+
+/* ========================================================= */
+/* اگر Pointer از صفحه خارج شد                               */
+/* ========================================================= */
+
+monitorViewer.addEventListener(
+    'pointerleave',
     function() {
 
-        if (!isDragging) {
-
-            return;
-
-        }
-
-        isDragging = false;
-
-        monitorImage.classList.remove('dragging');
-
-
-        const diffX =
-            currentX - startX;
-
-        const diffY =
-            currentY - startY;
-
-
         /*
-         * اگر حرکت کافی نبوده،
-         * هیچ کاری نکن.
+         * اینجا Drag را متوقف نمی‌کنیم،
+         * چون Pointer Capture فعال است.
          */
-
-        if (
-            Math.abs(diffX) <
-            swipeThreshold
-        ) {
-
-            return;
-
-        }
-
-
-        /*
-         * اگر حرکت عمودی بیشتر بوده،
-         * Drag افقی محسوب نمی‌شود.
-         */
-
-        if (
-            Math.abs(diffX) <=
-            Math.abs(diffY)
-        ) {
-
-            return;
-
-        }
-
-
-        /*
-         * Drag راست به چپ
-         * = مانیتور بعدی
-         */
-
-        if (diffX < 0) {
-
-            nextMonitor();
-
-        }
-
-
-        /*
-         * Drag چپ به راست
-         * = مانیتور قبلی
-         */
-
-        else {
-
-            previousMonitor();
-
-        }
 
     }
 );
@@ -1831,6 +2329,16 @@ window.addEventListener(
 /* ========================================================= */
 
 monitorImage.addEventListener(
+    'dragstart',
+    function(e) {
+
+        e.preventDefault();
+
+    }
+);
+
+
+monitorNextImage.addEventListener(
     'dragstart',
     function(e) {
 
